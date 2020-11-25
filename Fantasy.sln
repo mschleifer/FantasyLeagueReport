@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fantasy", "Fantasy\Fantasy.csproj", "{83DE5475-64E1-4700-ADB5-6BBF10F12D2D}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Fantasy.API", "Fantasy.API\Fantasy.API.njsproj", "{551AAF2E-670F-4512-AB7F-C58306E88BEA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83DE5475-64E1-4700-ADB5-6BBF10F12D2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83DE5475-64E1-4700-ADB5-6BBF10F12D2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83DE5475-64E1-4700-ADB5-6BBF10F12D2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83DE5475-64E1-4700-ADB5-6BBF10F12D2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{551AAF2E-670F-4512-AB7F-C58306E88BEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{551AAF2E-670F-4512-AB7F-C58306E88BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{551AAF2E-670F-4512-AB7F-C58306E88BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{551AAF2E-670F-4512-AB7F-C58306E88BEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67F87D4A-08C8-4C50-988F-165F77558026}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,203 @@
+﻿@page "/weeklyreport/{seasonId:int}/{weekId:int}"
+@inject FantasyApiService MyApiService
+
+<h1>Weekly Report</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (Teams == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        Highest Score: @string.Join(", ", HighScoreTeam.Select(x => x.Team.Name)) (@HighScoreTeam.First().Score pts)
+        Unlucky: @string.Join(", ", UnluckyTeam.Select(x => x.Team.Name)) (@UnluckyTeam.First().Score to @Teams.FindById(UnluckyTeam.First().OpposingTeamId).Score)
+        Most Dominant Victory: @string.Join(", ", DominantTeam.Select(x => x.Team.Name)) (+@Teams.GetMarginalScoreForTeam(DominantTeam.First().Team.Id) pts)
+        Narrowest Loss: @string.Join(", ", NarrowLossTeam.Select(x => x.Team.Name)) (@Teams.GetMarginalScoreForTeam(NarrowLossTeam.First().Team.Id) pts)
+    </div>
+    <div>
+        Top QB: @TopQB.First().BoxScore.TotalPoints pts - @string.Join(", ", TopQB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+    </div>
+    <div>
+        Top RB: @TopRB.First().BoxScore.TotalPoints pts - @string.Join(", ", TopRB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+    </div>
+    <div>
+        Top WR: @TopWR.First().BoxScore.TotalPoints pts - @string.Join(", ", TopWR.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+    </div>
+    <div>
+        Top TE: @TopTE.First().BoxScore.TotalPoints pts - @string.Join(", ", TopTE.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+    </div>
+    <div>
+        Top DST: @TopDST.First().BoxScore.TotalPoints pts - @string.Join(", ", TopDST.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+    </div>
+    <div>
+        Top K: @TopK.First().BoxScore.TotalPoints pts - @string.Join(", ", TopK.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+    </div>
+    <div>
+        Top Bench: @TopBench.First().BoxScore.TotalPoints pts - @string.Join(", ", TopBench.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+    </div>
+}
+
+@*Check https://dribbble.com/shots/14517208-Clivlend-Team-Ticket-Distributor for design inspiration*@
+<div class="bg-gray-100">
+    <div>
+        <div class="flex">
+            <div class="w-1/4">
+                <img src="https://logoipsum.com/logo/logo-25.svg" alt="Logo" />
+            </div>
+            <nav class="flex-grow">
+                <ul class="flex justify-evenly">
+                    <li class="flex items-end"><a class="font-semibold" href="#">Tickets</a></li>
+                    <li class="flex items-end"><a class="font-semibold text-yellow-600 border-t-4 border-yellow-600" href="#">Games</a></li>
+                    <li class="flex items-end"><a class="font-semibold" href="#">Players</a></li>
+                    <li class="flex items-end"><a class="font-semibold" href="#">News</a></li>
+                </ul>
+            </nav>
+            <div class="w-1/4 justify-evenly flex self-center">
+                <div><a class="font-semibold" href="#">Log In</a></div>
+                <div><a class="font-semibold bg-red-800 text-white py-2 px-4" href="#">Sign Up</a></div>
+            </div>
+        </div>
+        <div class="flex overflow-hidden">
+            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+                <div class="flex items-center gap-3">
+                    <img src="http://placekitten.com/50/50?image=12" alt="team logo" />
+                    <div class="flex-grow">Team Paws</div>
+                    <div class="font-bold">89</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <img src="http://placekitten.com/50/50?image=11" alt="team logo" />
+                    <div class="flex-grow">Team Claws</div>
+                    <div class="font-bold">123</div>
+                </div>
+            </div>
+            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+                <div class="flex items-center gap-3">
+                    <img src="http://placekitten.com/50/50?image=4" alt="team logo" />
+                    <div class="flex-grow">Team Purrfect</div>
+                    <div class="font-bold">89</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <img src="http://placekitten.com/50/50?image=5" alt="team logo" />
+                    <div class="flex-grow">Team Hissteric</div>
+                    <div class="font-bold">123</div>
+                </div>
+            </div>
+            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+                <div class="flex items-center gap-3">
+                    <img src="http://placekitten.com/50/50?image=6" alt="team logo" />
+                    <div class="flex-grow">Team Tuna</div>
+                    <div class="font-bold">89</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <img src="http://placekitten.com/50/50?image=7" alt="team logo" />
+                    <div class="flex-grow">Team Chicken</div>
+                    <div class="font-bold">123</div>
+                </div>
+            </div>
+            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+                <div class="flex items-center gap-3">
+                    <img src="http://placekitten.com/50/50?image=8" alt="team logo" />
+                    <div class="flex-grow">Team Calico</div>
+                    <div class="font-bold">89</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <img src="http://placekitten.com/50/50?image=9" alt="team logo" />
+                    <div class="flex-grow">Team Tabby</div>
+                    <div class="font-bold">123</div>
+                </div>
+            </div>
+            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+                <div class="flex items-center gap-3">
+                    <img src="http://placekitten.com/50/50?image=1" alt="team logo" />
+                    <div class="flex-grow">Team Indoor</div>
+                    <div class="font-bold">89</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <img src="http://placekitten.com/50/50?image=2" alt="team logo" />
+                    <div class="flex-grow">Team Outdoor</div>
+                    <div class="font-bold">123</div>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <h2 class="font-semibold text-xl">Rankings</h2>
+            <div class="mx-8">
+                <ul class="flex">
+                    <li class="mx-4 font-semibold text-gray-500">Topic 1</li>
+                    <li class="mx-4 font-semibold text-gray-500">Topic 2</li>
+                    <li class="mx-4 font-semibold text-gray-500">Topic 3</li>
+                    <li class="mx-4 font-semibold text-gray-500">Topic 4</li>
+                </ul>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Picture</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-green-600 border-l-4">
+                            <td>QB</td>
+                            <td>Picture</td>
+                            <td>Aaron Rodgers</td>
+                            <td>77</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+@code {
+    [Parameter]
+    public int SeasonId { get; set; }
+    [Parameter]
+    public int WeekId { get; set; }
+
+    private IEnumerable<TeamForWeek> Teams;
+    private IEnumerable<TeamForWeek> HighScoreTeam;
+    private IEnumerable<TeamForWeek> UnluckyTeam;
+    private IEnumerable<TeamForWeek> DominantTeam;
+    private IEnumerable<TeamForWeek> NarrowLossTeam;
+    private IEnumerable<PlayerForWeek> TopQB;
+    private IEnumerable<PlayerForWeek> TopRB;
+    private IEnumerable<PlayerForWeek> TopWR;
+    private IEnumerable<PlayerForWeek> TopTE;
+    private IEnumerable<PlayerForWeek> TopDST;
+    private IEnumerable<PlayerForWeek> TopK;
+    private IEnumerable<PlayerForWeek> TopBench;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Teams = await MyApiService.GetAllTeamsForWeek(SeasonId, WeekId);
+        HighScoreTeam = Teams.GetHighestScoring();
+        UnluckyTeam = Teams.GetUnluckiestLoss();
+        DominantTeam = Teams.GetDominantVictory();
+        NarrowLossTeam = Teams.GetNarrowestLoss();
+        TopQB = Teams.GetTopScoringQB();
+        TopRB = Teams.GetTopScoringRB();
+        TopWR = Teams.GetTopScoringWR();
+        TopTE = Teams.GetTopScoringTE();
+        TopDST = Teams.GetTopScoringDST();
+        TopK = Teams.GetTopScoringK();
+        TopBench = Teams.GetTopScoringBenchPlayer();
+    }
+}
