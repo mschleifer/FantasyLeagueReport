@@ -1,44 +1,54 @@
 ﻿@page "/weeklyreport/{seasonId:int}/{weekId:int}"
 @inject FantasyApiService MyApiService
+@inject IJSRuntime MyJSRuntime;
 
-<h1>Weekly Report</h1>
+@*<h1>Weekly Report</h1>*@
 
-<p>This component demonstrates fetching data from the server.</p>
+@*<p>This component demonstrates fetching data from the server.</p>*@
 
-@if (Teams == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <div>
-        Highest Score: @string.Join(", ", HighScoreTeam.Select(x => x.Team.Name)) (@HighScoreTeam.First().Score pts)
-        Unlucky: @string.Join(", ", UnluckyTeam.Select(x => x.Team.Name)) (@UnluckyTeam.First().Score to @Teams.FindById(UnluckyTeam.First().OpposingTeamId).Score)
-        Most Dominant Victory: @string.Join(", ", DominantTeam.Select(x => x.Team.Name)) (+@Teams.GetMarginalScoreForTeam(DominantTeam.First().Team.Id) pts)
-        Narrowest Loss: @string.Join(", ", NarrowLossTeam.Select(x => x.Team.Name)) (@Teams.GetMarginalScoreForTeam(NarrowLossTeam.First().Team.Id) pts)
-    </div>
-    <div>
-        Top QB: @TopQB.First().BoxScore.TotalPoints pts - @string.Join(", ", TopQB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-    </div>
-    <div>
-        Top RB: @TopRB.First().BoxScore.TotalPoints pts - @string.Join(", ", TopRB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-    </div>
-    <div>
-        Top WR: @TopWR.First().BoxScore.TotalPoints pts - @string.Join(", ", TopWR.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-    </div>
-    <div>
-        Top TE: @TopTE.First().BoxScore.TotalPoints pts - @string.Join(", ", TopTE.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-    </div>
-    <div>
-        Top DST: @TopDST.First().BoxScore.TotalPoints pts - @string.Join(", ", TopDST.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-    </div>
-    <div>
-        Top K: @TopK.First().BoxScore.TotalPoints pts - @string.Join(", ", TopK.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-    </div>
-    <div>
-        Top Bench: @TopBench.First().BoxScore.TotalPoints pts - @string.Join(", ", TopBench.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-    </div>
-}
+@*@if (Teams == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <div>
+            Highest Score: @string.Join(", ", HighScoreTeam.Select(x => x.Team.Name)) (@HighScoreTeam.First().Score pts)
+            Unlucky: @string.Join(", ", UnluckyTeam.Select(x => x.Team.Name)) (@UnluckyTeam.First().Score to @Teams.FindById(UnluckyTeam.First().OpposingTeamId).Score)
+            Most Dominant Victory: @string.Join(", ", DominantTeam.Select(x => x.Team.Name)) (+@Teams.GetMarginalScoreForTeam(DominantTeam.First().Team.Id) pts)
+            Narrowest Loss: @string.Join(", ", NarrowLossTeam.Select(x => x.Team.Name)) (@Teams.GetMarginalScoreForTeam(NarrowLossTeam.First().Team.Id) pts)
+        </div>
+        <div>
+            Top QB: @TopQB.First().BoxScore.TotalPoints pts - @string.Join(", ", TopQB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+        </div>
+        <div>
+            Top RB: @TopRB.First().BoxScore.TotalPoints pts - @string.Join(", ", TopRB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+        </div>
+        <div>
+            Top WR: @TopWR.First().BoxScore.TotalPoints pts - @string.Join(", ", TopWR.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+        </div>
+        <div>
+            Top TE: @TopTE.First().BoxScore.TotalPoints pts - @string.Join(", ", TopTE.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+        </div>
+        <div>
+            Top DST: @TopDST.First().BoxScore.TotalPoints pts - @string.Join(", ", TopDST.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+        </div>
+        <div>
+            Top K: @TopK.First().BoxScore.TotalPoints pts - @string.Join(", ", TopK.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+        </div>
+        <div>
+            Top Bench: @TopBench.First().BoxScore.TotalPoints pts - @string.Join(", ", TopBench.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
+        </div>
+    }*@
+
+@*<div id="flickity-demo" class="carousel">
+    <div class="carousel-cell"></div>
+    <div class="carousel-cell"></div>
+    <div class="carousel-cell"></div>
+    <div class="carousel-cell"></div>
+    <div class="carousel-cell"></div>
+</div>*@
+
 
 @*Check https://dribbble.com/shots/14517208-Clivlend-Team-Ticket-Distributor for design inspiration*@
 <div class="bg-gray-100">
@@ -60,7 +70,7 @@ else
                 <div><a class="font-semibold bg-red-800 text-white py-2 px-4" href="#">Sign Up</a></div>
             </div>
         </div>
-        <div class="flex overflow-hidden">
+        <div id="flickity-demo">
             <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
                 <div class="flex items-center gap-3">
                     <img src="http://placekitten.com/50/50?image=12" alt="team logo" />
@@ -142,9 +152,12 @@ else
                     </thead>
                     <tbody>
                         <tr class="border-green-600 border-l-4">
-                            <td>QB</td>
-                            <td>Picture</td>
-                            <td>Aaron Rodgers</td>
+                            <td>QT</td>
+                            <td>
+                                <img src="http://placekitten.com/50/50?image=16" alt="player picture"
+                                     class="rounded-full"/>
+                            </td>
+                            <td>Mittens Mouser</td>
                             <td>77</td>
                         </tr>
                     </tbody>
@@ -153,16 +166,6 @@ else
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
 
 
 @code {
@@ -199,5 +202,10 @@ else
         TopDST = Teams.GetTopScoringDST();
         TopK = Teams.GetTopScoringK();
         TopBench = Teams.GetTopScoringBenchPlayer();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await MyJSRuntime.InvokeVoidAsync("flickity.init", "flickity-demo");
     }
 }
