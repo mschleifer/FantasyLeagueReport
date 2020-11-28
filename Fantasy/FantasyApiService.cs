@@ -19,7 +19,6 @@ namespace Fantasy
         }
 
         // TODO: Probably setup some kind of authorization on the api function
-
         public async Task<List<TeamForWeek>> GetAllTeamsForWeek(int seasonId, int weekId)
         {
             var scores = await _httpClient.GetFromJsonAsync<List<Boxscore>>($"/api/boxscore/551600/{seasonId}/{weekId}");

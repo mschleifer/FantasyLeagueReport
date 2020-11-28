@@ -16,6 +16,22 @@ namespace Fantasy.Models
         {
             return teams.Single(x => x.Team.Id == id);
         }
+
+        public static IList<(TeamForWeek Team1, TeamForWeek Team2)> CreateBoxScores(this IEnumerable<TeamForWeek> teams)
+        {
+            var result = new List<(TeamForWeek Team1, TeamForWeek Team2)>();
+            foreach (var team in teams)
+            {
+                if(!result.Any(x => x.Team1.Team.Id == team.Team.Id || x.Team2.Team.Id == team.Team.Id))
+                {
+                    var opposingTeam = teams.FindById(team.OpposingTeamId);
+                    result.Add((Team1: team, Team2: opposingTeam));
+                }
+            }
+
+            return result;
+        }
+
         public static IEnumerable<TeamForWeek> GetWinningTeams(this IEnumerable<TeamForWeek> teams)
         {
             return teams.Where(x => x.Score > teams.Single(y => y.Team.Id == x.OpposingTeamId).Score);
@@ -47,7 +63,7 @@ namespace Fantasy.Models
 
         public static IEnumerable<TeamForWeek> GetNarrowestLoss(this IEnumerable<TeamForWeek> teams)
         {
-            return teams.MinBy(x => teams.FindById(x.OpposingTeamId).Score - x.Score);
+            return teams.GetLosingTeams().MinBy(x => teams.FindById(x.OpposingTeamId).Score - x.Score);
         }
 
         /// <summary>
@@ -70,7 +86,7 @@ namespace Fantasy.Models
         /// </remarks>
         public static IEnumerable<PlayerForWeek> GetTopScoringPlayer(this IEnumerable<TeamForWeek> teams, PositionType playerPosition, IEnumerable<PositionType> startingPositions)
         {
-            
+
             var highestScore = teams.Max(x => x.Lineup.Where(y => startingPositions.Select(y => y.Value).Contains(y.Position)
                                                                && y.Player.EligiblePositions.Contains(playerPosition.Value))
                                                       .Max(y => y.TotalPoints));
@@ -114,6 +130,14 @@ namespace Fantasy.Models
         public static IEnumerable<PlayerForWeek> GetTopScoringBenchPlayer(this IEnumerable<TeamForWeek> teams)
         {
             return teams.GetTopScoringPlayer(PositionType.Bench, new[] { PositionType.Bench });
+        }
+
+        public static IEnumerable<PlayerForWeek> GetZeroPointStarters(this IEnumerable<TeamForWeek> teams)
+        {
+            return teams.SelectMany(x => x.Lineup
+                                          .Where(y => (y.Position != PositionType.Bench.Value && y.Position != PositionType.IR.Value) 
+                                                   && y.TotalPoints == 0)
+                                          .Select(y => new PlayerForWeek { FantasyTeam = x.Team, BoxScore = y }));
         }
     }
 }

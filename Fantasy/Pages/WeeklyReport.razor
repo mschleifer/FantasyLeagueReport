@@ -3,224 +3,155 @@
 @inject IJSRuntime MyJSRuntime;
 @*<h1>Weekly Report</h1>*@
 
-@*<p>This component demonstrates fetching data from the server.</p>*@
-
-@*@if (Teams == null)
-    {
-        <p><em>Loading...</em></p>
-    }
-    else
-    {
-        <div>
-            Highest Score: @string.Join(", ", HighScoreTeam.Select(x => x.Team.Name)) (@HighScoreTeam.First().Score pts)
-            Unlucky: @string.Join(", ", UnluckyTeam.Select(x => x.Team.Name)) (@UnluckyTeam.First().Score to @Teams.FindById(UnluckyTeam.First().OpposingTeamId).Score)
-            Most Dominant Victory: @string.Join(", ", DominantTeam.Select(x => x.Team.Name)) (+@Teams.GetMarginalScoreForTeam(DominantTeam.First().Team.Id) pts)
-            Narrowest Loss: @string.Join(", ", NarrowLossTeam.Select(x => x.Team.Name)) (@Teams.GetMarginalScoreForTeam(NarrowLossTeam.First().Team.Id) pts)
-        </div>
-        <div>
-            Top QB: @TopQB.First().BoxScore.TotalPoints pts - @string.Join(", ", TopQB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-        </div>
-        <div>
-            Top RB: @TopRB.First().BoxScore.TotalPoints pts - @string.Join(", ", TopRB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-        </div>
-        <div>
-            Top WR: @TopWR.First().BoxScore.TotalPoints pts - @string.Join(", ", TopWR.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-        </div>
-        <div>
-            Top TE: @TopTE.First().BoxScore.TotalPoints pts - @string.Join(", ", TopTE.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-        </div>
-        <div>
-            Top DST: @TopDST.First().BoxScore.TotalPoints pts - @string.Join(", ", TopDST.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-        </div>
-        <div>
-            Top K: @TopK.First().BoxScore.TotalPoints pts - @string.Join(", ", TopK.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-        </div>
-        <div>
-            Top Bench: @TopBench.First().BoxScore.TotalPoints pts - @string.Join(", ", TopBench.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))
-        </div>
-    }*@
-
-@*<div id="flickity-demo" class="carousel">
-        <div class="carousel-cell"></div>
-        <div class="carousel-cell"></div>
-        <div class="carousel-cell"></div>
-        <div class="carousel-cell"></div>
-        <div class="carousel-cell"></div>
-    </div>*@
-
-
-@*Check https://dribbble.com/shots/14517208-Clivlend-Team-Ticket-Distributor for design inspiration*@
-@*<div id="flickity-demo">
-        @foreach (var team in Teams)
+@if (Teams == null)
+{
+    <p><em>Retrieving boxscores...</em></p>
+}
+else
+{
+    @*Check https://dribbble.com/shots/14517208-Clivlend-Team-Ticket-Distributor for design inspiration*@
+    <div id="boxscores">
+        @foreach (var boxscore in Teams.CreateBoxScores())
         {
-            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1 bg-white">
                 <div class="flex items-center gap-3">
-                    <img src="@team.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg"/>
-                    <div class="flex-grow">@team.Team.Name</div>
-                    <div class="font-bold">@team.Score</div>
+                    <img src="@boxscore.Team1.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg" />
+                    <div class="flex-grow">@boxscore.Team1.Team.Name</div>
+                    <div class="font-bold">@boxscore.Team1.Score</div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <img src="@team.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg" />
-                    <div class="flex-grow">@team.Team.Name</div>
-                    <div class="font-bold">@team.Score</div>
+                    <img src="@boxscore.Team2.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg" />
+                    <div class="flex-grow">@boxscore.Team2.Team.Name</div>
+                    <div class="font-bold">@boxscore.Team2.Score</div>
                 </div>
             </div>
         }
-    </div>*@
+    </div>
 
-<div id="flickity-demo">
-    <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-        <div class="flex items-center gap-3">
-            <img src="https://g.espncdn.com/lm-static/ffl/images/default_logos/6.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Belichick Yourself</div><!--!-->
-            <div class="font-bold">101</div>
-        </div><!--!-->
-        <div class="flex items-center gap-3">
-            <img src="https://g.espncdn.com/lm-static/ffl/images/default_logos/6.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Belichick Yourself</div><!--!-->
-            <div class="font-bold">101</div>
+    <div class="flex flex-col px-4 bg-white">
+        <h2 class="font-semibold text-xl mb-2">Rankings</h2>
+        <div class="mx-8">
+            <ul class="flex mb-4">
+                <li class="mx-4 font-semibold text-gray-500">Team Awards</li>
+                <li class="mx-4 font-semibold text-gray-500">Player Awards</li>
+                <li class="mx-4 font-semibold text-gray-500">"Gooses"</li>
+            </ul>
+            <table class="table-fixed">
+                <thead>
+                    <tr>
+                        <th class="hidden">Icon</th>
+                        <th class="hidden">Category</th>
+                        <th class="hidden">Team(s)</th>
+                        <th class="hidden">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-green-600 border-l-4">
+                        <td class="py-8 px-4">👑</td>
+                        <td class="px-4">Highest Scorer</td>
+                        <td class="px-4"> @string.Join(", ", HighScoreTeam.Select(x => x.Team.Name))</td>
+                        <td class="text-right px-4">@HighScoreTeam.First().Score pts</td>
+                    </tr>
+                    <tr class="border-yellow-600 border-l-4">
+                        <td class="py-8 px-4">🍀</td>
+                        <td class="px-4">Most Unlucky</td>
+                        <td class="px-4">@string.Join(", ", UnluckyTeam.Select(x => x.Team.Name))</td>
+                        <td class="text-right px-4">@UnluckyTeam.First().Score to @Teams.FindById(UnluckyTeam.First().OpposingTeamId).Score</td>
+                    </tr>
+                    <tr class="border-green-600 border-l-4">
+                        <td class="py-8 px-4">💪</td>
+                        <td class="px-4">Most Dominant Win</td>
+                        <td class="px-4">@string.Join(", ", DominantTeam.Select(x => x.Team.Name))</td>
+                        <td class="text-right px-4">+@Teams.GetMarginalScoreForTeam(DominantTeam.First().Team.Id) pts</td>
+                    </tr>
+                    <tr class="border-yellow-600 border-l-4">
+                        <td class="py-8 px-4">📏</td>
+                        <td class="px-4">Narrowest Loss</td>
+                        <td class="px-4">@string.Join(", ", NarrowLossTeam.Select(x => x.Team.Name))</td>
+                        <td class="text-right px-4">@Teams.GetMarginalScoreForTeam(NarrowLossTeam.First().Team.Id) pts</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table-fixed">
+                <thead>
+                    <tr>
+                        <th class="hidden">Icon</th>
+                        <th class="hidden">Position</th>
+                        <th class="hidden">Score</th>
+                        <th class="hidden">Player(s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-green-600 border-l-4">
+                        <td class="py-8 px-4">🔥</td>
+                        <td class="px-4">QB</td>
+                        <td class="px-4">@TopQB.First().BoxScore.TotalPoints pts</td>
+                        <td class="text-right px-4">@string.Join(", ", TopQB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                    </tr>
+                    <tr class="border-green-600 border-l-4">
+                        <td class="py-8 px-4">🔥</td>
+                        <td class="px-4">RB</td>
+                        <td class="px-4">@TopRB.First().BoxScore.TotalPoints pts</td>
+                        <td class="text-right px-4">@string.Join(", ", TopRB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                    </tr>
+                    <tr class="border-green-600 border-l-4">
+                        <td class="py-8 px-4">🔥</td>
+                        <td class="px-4">WR</td>
+                        <td class="px-4">@TopWR.First().BoxScore.TotalPoints pts</td>
+                        <td class="text-right px-4">@string.Join(", ", TopWR.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                    </tr>
+                    <tr class="border-green-600 border-l-4">
+                        <td class="py-8 px-4">🔥</td>
+                        <td class="px-4">TE</td>
+                        <td class="px-4">@TopTE.First().BoxScore.TotalPoints pts</td>
+                        <td class="text-right px-4">@string.Join(", ", TopTE.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                    </tr>
+                    <tr class="border-green-600 border-l-4">
+                        <td class="py-8 px-4">🔥</td>
+                        <td class="px-4">DST</td>
+                        <td class="px-4">@TopDST.First().BoxScore.TotalPoints pts</td>
+                        <td class="text-right px-4">@string.Join(", ", TopDST.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                    </tr>
+                    <tr class="border-green-600 border-l-4">
+                        <td class="py-8 px-4">🤔</td>
+                        <td class="px-4">K</td>
+                        <td class="px-4">@TopK.First().BoxScore.TotalPoints pts</td>
+                        <td class="text-right px-4">@string.Join(", ", TopK.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                    </tr>
+                    <tr class="border-green-600 border-l-4">
+                        <td class="py-8 px-4">💺</td>
+                        <td class="px-4">Bench</td>
+                        <td class="px-4">@TopBench.First().BoxScore.TotalPoints pts</td>
+                        <td class="text-right px-4">@string.Join(", ", TopBench.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table-fixed">
+                <thead>
+                    <tr>
+                        <th class="hidden">Icon</th>
+                        <th class="hidden">Position</th>
+                        <th class="hidden">Player Name</th>
+                        <th class="hidden">Team</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var player in GoosePlayers)
+                    {
+                        <tr class="border-green-600 border-l-4">
+                            <td class="py-8 px-4">🦢</td>
+                            <td class="px-4">@player.BoxScore.Position</td>
+                            <td class="px-4">@player.BoxScore.Player.FullName</td>
+                            <td class="text-right px-4">@player.FantasyTeam.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
-    <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-        <div class="flex items-center gap-3">
-            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/HelmetAlphabet-ESPN/Helmet-A.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">THE VERK</div><!--!-->
-            <div class="font-bold">79</div>
-        </div><!--!-->
-        <div class="flex items-center gap-3">
-            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/HelmetAlphabet-ESPN/Helmet-A.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">THE VERK</div><!--!-->
-            <div class="font-bold">79</div>
-        </div>
-    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-        <div class="flex items-center gap-3">
-            <img src="https://content.sportslogos.net/logos/54/71/full/2308.png" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Burgh Mare Bears</div><!--!-->
-            <div class="font-bold">100</div>
-        </div><!--!-->
-        <div class="flex items-center gap-3">
-            <img src="https://content.sportslogos.net/logos/54/71/full/2308.png" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Burgh Mare Bears</div><!--!-->
-            <div class="font-bold">100</div>
-        </div>
-    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-        <div class="flex items-center gap-3">
-            <img src="http://www.modaruniversity.org/images/webpages/BFS-Badge-Guard-Captain.gif" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Team Cossacks</div><!--!-->
-            <div class="font-bold">70</div>
-        </div><!--!-->
-        <div class="flex items-center gap-3">
-            <img src="http://www.modaruniversity.org/images/webpages/BFS-Badge-Guard-Captain.gif" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Team Cossacks</div><!--!-->
-            <div class="font-bold">70</div>
-        </div>
-    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-        <div class="flex items-center gap-3">
-            <img src="https://pbs.twimg.com/media/DMiNKrVVQAAz1dt.jpg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Windy City Luchadors</div><!--!-->
-            <div class="font-bold">102</div>
-        </div><!--!-->
-        <div class="flex items-center gap-3">
-            <img src="https://pbs.twimg.com/media/DMiNKrVVQAAz1dt.jpg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Windy City Luchadors</div><!--!-->
-            <div class="font-bold">102</div>
-        </div>
-    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-        <div class="flex items-center gap-3">
-            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/HelmetAlphabet-ESPN/Helmet-A.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">. TeamAimerz</div><!--!-->
-            <div class="font-bold">66</div>
-        </div><!--!-->
-        <div class="flex items-center gap-3">
-            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/HelmetAlphabet-ESPN/Helmet-A.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">. TeamAimerz</div><!--!-->
-            <div class="font-bold">66</div>
-        </div>
-    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-        <div class="flex items-center gap-3">
-            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/GridironWarriors-MartinLaksman/warriors-15.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Team Unretired Queen</div><!--!-->
-            <div class="font-bold">110</div>
-        </div><!--!-->
-        <div class="flex items-center gap-3">
-            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/GridironWarriors-MartinLaksman/warriors-15.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Team Unretired Queen</div><!--!-->
-            <div class="font-bold">110</div>
-        </div>
-    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-        <div class="flex items-center gap-3">
-            <img alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Big Jakes</div><!--!-->
-            <div class="font-bold">35</div>
-        </div><!--!-->
-        <div class="flex items-center gap-3">
-            <img alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Big Jakes</div><!--!-->
-            <div class="font-bold">35</div>
-        </div>
-    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-        <div class="flex items-center gap-3">
-            <img src="http://i.imgur.com/MXKyO2n.png" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Team Beauty And The 🧀</div><!--!-->
-            <div class="font-bold">101</div>
-        </div><!--!-->
-        <div class="flex items-center gap-3">
-            <img src="http://i.imgur.com/MXKyO2n.png" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Team Beauty And The 🧀</div><!--!-->
-            <div class="font-bold">101</div>
-        </div>
-    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-        <div class="flex items-center gap-3">
-            <img src="https://g.espncdn.com/s/ffllm/logos/BigHeroSix/SVG/BigHero6-11.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Team Longball</div><!--!-->
-            <div class="font-bold">78</div>
-        </div><!--!-->
-        <div class="flex items-center gap-3">
-            <img src="https://g.espncdn.com/s/ffllm/logos/BigHeroSix/SVG/BigHero6-11.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
-            <div class="flex-grow">Team Longball</div><!--!-->
-            <div class="font-bold">78</div>
-        </div>
-    </div>
-</div>
-<div class="flex flex-col px-4 bg-white">
-    <h2 class="font-semibold text-xl mb-2">Rankings</h2>
-    <div class="mx-8">
-        <ul class="flex mb-4">
-            <li class="mx-4 font-semibold text-gray-500">Topic 1</li>
-            <li class="mx-4 font-semibold text-gray-500">Topic 2</li>
-            <li class="mx-4 font-semibold text-gray-500">Topic 3</li>
-            <li class="mx-4 font-semibold text-gray-500">Topic 4</li>
-        </ul>
-        <table class="table-fixed">
-            <thead>
-                <tr>
-                    <th class="hidden">Category</th>
-                    <th class="hidden">Picture</th>
-                    <th class="hidden">Name</th>
-                    <th class="hidden">Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="border-green-600 border-l-4">
-                    <td class="py-8 px-4">QT</td>
-                    <td class="px-4">
-                        <img src="http://placekitten.com/50/50?image=16" alt="player picture" class="rounded-full" />
-                    </td>
-                    <td class="px-4">Mittens Mouser</td>
-                    <td class="text-right px-4">77</td>
-                </tr>
-                <tr class="border-yellow-600 border-l-4">
-                    <td class="py-8 px-4">XR</td>
-                    <td class="px-4">
-                        <img src="http://placekitten.com/50/50?image=15" alt="player picture" class="rounded-full" />
-                    </td>
-                    <td class="px-4">Socks Purrton</td>
-                    <td class="text-right px-4">82</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+}
 
 
 @code {
@@ -229,7 +160,7 @@
     [Parameter]
     public int WeekId { get; set; }
 
-    private IEnumerable<TeamForWeek> Teams = new List<TeamForWeek>();
+    private IEnumerable<TeamForWeek> Teams;
     private IEnumerable<TeamForWeek> HighScoreTeam;
     private IEnumerable<TeamForWeek> UnluckyTeam;
     private IEnumerable<TeamForWeek> DominantTeam;
@@ -241,18 +172,15 @@
     private IEnumerable<PlayerForWeek> TopDST;
     private IEnumerable<PlayerForWeek> TopK;
     private IEnumerable<PlayerForWeek> TopBench;
-
+    private IEnumerable<PlayerForWeek> GoosePlayers;
 
     protected override async Task OnInitializedAsync()
     {
-        Teams = await MyApiService.GetAllTeamsForWeek(SeasonId, WeekId);
-
-        //Task<List<TeamForWeek>> taskA = MyApiService.GetAllTeamsForWeek(SeasonId, WeekId);
-        //await taskA.ContinueWith(x =>
-        //{
-        //    Teams = x.Result;
-        //    MyJSRuntime.InvokeVoidAsync("flickity.init", "flickity-demo");
-        //});
+        Task<List<TeamForWeek>> taskA = MyApiService.GetAllTeamsForWeek(SeasonId, WeekId);
+        await taskA.ContinueWith(x =>
+        {
+            Teams = x.Result;
+        });
 
         HighScoreTeam = Teams.GetHighestScoring();
         UnluckyTeam = Teams.GetUnluckiestLoss();
@@ -265,10 +193,17 @@
         TopDST = Teams.GetTopScoringDST();
         TopK = Teams.GetTopScoringK();
         TopBench = Teams.GetTopScoringBenchPlayer();
+        GoosePlayers = Teams.GetZeroPointStarters();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await MyJSRuntime.InvokeVoidAsync("flickity.init", "flickity-demo");
+        // This will run both before our API call completes and after, we need to make sure to only apply Flickity after
+        // NOTE: per MSDN JS libraries that modify the DOM are unsafe when they interact with DOM elements provided by
+        // Blazor - we probably shouldn't do this if the Teams is ever expected to change after the 1st API call
+        if (Teams != null)
+        {
+            await MyJSRuntime.InvokeVoidAsync("flickity.init", "boxscores");
+        }
     }
 }

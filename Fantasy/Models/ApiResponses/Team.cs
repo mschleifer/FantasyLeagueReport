@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -21,7 +22,10 @@ namespace Fantasy.Models.ApiResponses
         public string Name { get; set; }
 
         [JsonPropertyName("logoURL")]
-        public string LogoURL { get; set; }
+        public string _retrievedLogo { get; set; }
+
+        [JsonIgnore]
+        public string LogoURL => string.IsNullOrEmpty(_retrievedLogo) ? $"https://placekitten.com/100/100?image={new Random().Next(17)}" : _retrievedLogo;
 
         [JsonPropertyName("waiverRank")]
         public int WaiverRank { get; set; }
