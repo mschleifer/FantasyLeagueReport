@@ -1,7 +1,6 @@
 ﻿@page "/weeklyreport/{seasonId:int}/{weekId:int}"
 @inject FantasyApiService MyApiService
 @inject IJSRuntime MyJSRuntime;
-
 @*<h1>Weekly Report</h1>*@
 
 @*<p>This component demonstrates fetching data from the server.</p>*@
@@ -42,128 +41,184 @@
     }*@
 
 @*<div id="flickity-demo" class="carousel">
-    <div class="carousel-cell"></div>
-    <div class="carousel-cell"></div>
-    <div class="carousel-cell"></div>
-    <div class="carousel-cell"></div>
-    <div class="carousel-cell"></div>
-</div>*@
+        <div class="carousel-cell"></div>
+        <div class="carousel-cell"></div>
+        <div class="carousel-cell"></div>
+        <div class="carousel-cell"></div>
+        <div class="carousel-cell"></div>
+    </div>*@
 
 
 @*Check https://dribbble.com/shots/14517208-Clivlend-Team-Ticket-Distributor for design inspiration*@
-<div class="bg-gray-100">
-    <div>
-        <div class="flex">
-            <div class="w-1/4">
-                <img src="https://logoipsum.com/logo/logo-25.svg" alt="Logo" />
+@*<div id="flickity-demo">
+        @foreach (var team in Teams)
+        {
+            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+                <div class="flex items-center gap-3">
+                    <img src="@team.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg"/>
+                    <div class="flex-grow">@team.Team.Name</div>
+                    <div class="font-bold">@team.Score</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <img src="@team.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg" />
+                    <div class="flex-grow">@team.Team.Name</div>
+                    <div class="font-bold">@team.Score</div>
+                </div>
             </div>
-            <nav class="flex-grow">
-                <ul class="flex justify-evenly">
-                    <li class="flex items-end"><a class="font-semibold" href="#">Tickets</a></li>
-                    <li class="flex items-end"><a class="font-semibold text-yellow-600 border-t-4 border-yellow-600" href="#">Games</a></li>
-                    <li class="flex items-end"><a class="font-semibold" href="#">Players</a></li>
-                    <li class="flex items-end"><a class="font-semibold" href="#">News</a></li>
-                </ul>
-            </nav>
-            <div class="w-1/4 justify-evenly flex self-center">
-                <div><a class="font-semibold" href="#">Log In</a></div>
-                <div><a class="font-semibold bg-red-800 text-white py-2 px-4" href="#">Sign Up</a></div>
-            </div>
+        }
+    </div>*@
+
+<div id="flickity-demo">
+    <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+        <div class="flex items-center gap-3">
+            <img src="https://g.espncdn.com/lm-static/ffl/images/default_logos/6.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Belichick Yourself</div><!--!-->
+            <div class="font-bold">101</div>
+        </div><!--!-->
+        <div class="flex items-center gap-3">
+            <img src="https://g.espncdn.com/lm-static/ffl/images/default_logos/6.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Belichick Yourself</div><!--!-->
+            <div class="font-bold">101</div>
         </div>
-        <div id="flickity-demo">
-            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-                <div class="flex items-center gap-3">
-                    <img src="http://placekitten.com/50/50?image=12" alt="team logo" />
-                    <div class="flex-grow">Team Paws</div>
-                    <div class="font-bold">89</div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <img src="http://placekitten.com/50/50?image=11" alt="team logo" />
-                    <div class="flex-grow">Team Claws</div>
-                    <div class="font-bold">123</div>
-                </div>
-            </div>
-            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-                <div class="flex items-center gap-3">
-                    <img src="http://placekitten.com/50/50?image=4" alt="team logo" />
-                    <div class="flex-grow">Team Purrfect</div>
-                    <div class="font-bold">89</div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <img src="http://placekitten.com/50/50?image=5" alt="team logo" />
-                    <div class="flex-grow">Team Hissteric</div>
-                    <div class="font-bold">123</div>
-                </div>
-            </div>
-            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-                <div class="flex items-center gap-3">
-                    <img src="http://placekitten.com/50/50?image=6" alt="team logo" />
-                    <div class="flex-grow">Team Tuna</div>
-                    <div class="font-bold">89</div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <img src="http://placekitten.com/50/50?image=7" alt="team logo" />
-                    <div class="flex-grow">Team Chicken</div>
-                    <div class="font-bold">123</div>
-                </div>
-            </div>
-            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-                <div class="flex items-center gap-3">
-                    <img src="http://placekitten.com/50/50?image=8" alt="team logo" />
-                    <div class="flex-grow">Team Calico</div>
-                    <div class="font-bold">89</div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <img src="http://placekitten.com/50/50?image=9" alt="team logo" />
-                    <div class="flex-grow">Team Tabby</div>
-                    <div class="font-bold">123</div>
-                </div>
-            </div>
-            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
-                <div class="flex items-center gap-3">
-                    <img src="http://placekitten.com/50/50?image=1" alt="team logo" />
-                    <div class="flex-grow">Team Indoor</div>
-                    <div class="font-bold">89</div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <img src="http://placekitten.com/50/50?image=2" alt="team logo" />
-                    <div class="flex-grow">Team Outdoor</div>
-                    <div class="font-bold">123</div>
-                </div>
-            </div>
+    </div>
+    <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+        <div class="flex items-center gap-3">
+            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/HelmetAlphabet-ESPN/Helmet-A.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">THE VERK</div><!--!-->
+            <div class="font-bold">79</div>
+        </div><!--!-->
+        <div class="flex items-center gap-3">
+            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/HelmetAlphabet-ESPN/Helmet-A.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">THE VERK</div><!--!-->
+            <div class="font-bold">79</div>
         </div>
-        <div class="flex flex-col">
-            <h2 class="font-semibold text-xl">Rankings</h2>
-            <div class="mx-8">
-                <ul class="flex">
-                    <li class="mx-4 font-semibold text-gray-500">Topic 1</li>
-                    <li class="mx-4 font-semibold text-gray-500">Topic 2</li>
-                    <li class="mx-4 font-semibold text-gray-500">Topic 3</li>
-                    <li class="mx-4 font-semibold text-gray-500">Topic 4</li>
-                </ul>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Picture</th>
-                            <th>Name</th>
-                            <th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-green-600 border-l-4">
-                            <td>QT</td>
-                            <td>
-                                <img src="http://placekitten.com/50/50?image=16" alt="player picture"
-                                     class="rounded-full"/>
-                            </td>
-                            <td>Mittens Mouser</td>
-                            <td>77</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+        <div class="flex items-center gap-3">
+            <img src="https://content.sportslogos.net/logos/54/71/full/2308.png" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Burgh Mare Bears</div><!--!-->
+            <div class="font-bold">100</div>
+        </div><!--!-->
+        <div class="flex items-center gap-3">
+            <img src="https://content.sportslogos.net/logos/54/71/full/2308.png" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Burgh Mare Bears</div><!--!-->
+            <div class="font-bold">100</div>
         </div>
+    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+        <div class="flex items-center gap-3">
+            <img src="http://www.modaruniversity.org/images/webpages/BFS-Badge-Guard-Captain.gif" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Team Cossacks</div><!--!-->
+            <div class="font-bold">70</div>
+        </div><!--!-->
+        <div class="flex items-center gap-3">
+            <img src="http://www.modaruniversity.org/images/webpages/BFS-Badge-Guard-Captain.gif" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Team Cossacks</div><!--!-->
+            <div class="font-bold">70</div>
+        </div>
+    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+        <div class="flex items-center gap-3">
+            <img src="https://pbs.twimg.com/media/DMiNKrVVQAAz1dt.jpg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Windy City Luchadors</div><!--!-->
+            <div class="font-bold">102</div>
+        </div><!--!-->
+        <div class="flex items-center gap-3">
+            <img src="https://pbs.twimg.com/media/DMiNKrVVQAAz1dt.jpg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Windy City Luchadors</div><!--!-->
+            <div class="font-bold">102</div>
+        </div>
+    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+        <div class="flex items-center gap-3">
+            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/HelmetAlphabet-ESPN/Helmet-A.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">. TeamAimerz</div><!--!-->
+            <div class="font-bold">66</div>
+        </div><!--!-->
+        <div class="flex items-center gap-3">
+            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/HelmetAlphabet-ESPN/Helmet-A.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">. TeamAimerz</div><!--!-->
+            <div class="font-bold">66</div>
+        </div>
+    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+        <div class="flex items-center gap-3">
+            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/GridironWarriors-MartinLaksman/warriors-15.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Team Unretired Queen</div><!--!-->
+            <div class="font-bold">110</div>
+        </div><!--!-->
+        <div class="flex items-center gap-3">
+            <img src="https://g.espncdn.com/lm-static/logo-packs/ffl/GridironWarriors-MartinLaksman/warriors-15.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Team Unretired Queen</div><!--!-->
+            <div class="font-bold">110</div>
+        </div>
+    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+        <div class="flex items-center gap-3">
+            <img alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Big Jakes</div><!--!-->
+            <div class="font-bold">35</div>
+        </div><!--!-->
+        <div class="flex items-center gap-3">
+            <img alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Big Jakes</div><!--!-->
+            <div class="font-bold">35</div>
+        </div>
+    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+        <div class="flex items-center gap-3">
+            <img src="http://i.imgur.com/MXKyO2n.png" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Team Beauty And The 🧀</div><!--!-->
+            <div class="font-bold">101</div>
+        </div><!--!-->
+        <div class="flex items-center gap-3">
+            <img src="http://i.imgur.com/MXKyO2n.png" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Team Beauty And The 🧀</div><!--!-->
+            <div class="font-bold">101</div>
+        </div>
+    </div><div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1">
+        <div class="flex items-center gap-3">
+            <img src="https://g.espncdn.com/s/ffllm/logos/BigHeroSix/SVG/BigHero6-11.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Team Longball</div><!--!-->
+            <div class="font-bold">78</div>
+        </div><!--!-->
+        <div class="flex items-center gap-3">
+            <img src="https://g.espncdn.com/s/ffllm/logos/BigHeroSix/SVG/BigHero6-11.svg" alt="team logo" class="w-14 h-14 rounded-lg"><!--!-->
+            <div class="flex-grow">Team Longball</div><!--!-->
+            <div class="font-bold">78</div>
+        </div>
+    </div>
+</div>
+<div class="flex flex-col px-4 bg-white">
+    <h2 class="font-semibold text-xl mb-2">Rankings</h2>
+    <div class="mx-8">
+        <ul class="flex mb-4">
+            <li class="mx-4 font-semibold text-gray-500">Topic 1</li>
+            <li class="mx-4 font-semibold text-gray-500">Topic 2</li>
+            <li class="mx-4 font-semibold text-gray-500">Topic 3</li>
+            <li class="mx-4 font-semibold text-gray-500">Topic 4</li>
+        </ul>
+        <table class="table-fixed">
+            <thead>
+                <tr>
+                    <th class="hidden">Category</th>
+                    <th class="hidden">Picture</th>
+                    <th class="hidden">Name</th>
+                    <th class="hidden">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-green-600 border-l-4">
+                    <td class="py-8 px-4">QT</td>
+                    <td class="px-4">
+                        <img src="http://placekitten.com/50/50?image=16" alt="player picture" class="rounded-full" />
+                    </td>
+                    <td class="px-4">Mittens Mouser</td>
+                    <td class="text-right px-4">77</td>
+                </tr>
+                <tr class="border-yellow-600 border-l-4">
+                    <td class="py-8 px-4">XR</td>
+                    <td class="px-4">
+                        <img src="http://placekitten.com/50/50?image=15" alt="player picture" class="rounded-full" />
+                    </td>
+                    <td class="px-4">Socks Purrton</td>
+                    <td class="text-right px-4">82</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -174,7 +229,7 @@
     [Parameter]
     public int WeekId { get; set; }
 
-    private IEnumerable<TeamForWeek> Teams;
+    private IEnumerable<TeamForWeek> Teams = new List<TeamForWeek>();
     private IEnumerable<TeamForWeek> HighScoreTeam;
     private IEnumerable<TeamForWeek> UnluckyTeam;
     private IEnumerable<TeamForWeek> DominantTeam;
@@ -191,6 +246,14 @@
     protected override async Task OnInitializedAsync()
     {
         Teams = await MyApiService.GetAllTeamsForWeek(SeasonId, WeekId);
+
+        //Task<List<TeamForWeek>> taskA = MyApiService.GetAllTeamsForWeek(SeasonId, WeekId);
+        //await taskA.ContinueWith(x =>
+        //{
+        //    Teams = x.Result;
+        //    MyJSRuntime.InvokeVoidAsync("flickity.init", "flickity-demo");
+        //});
+
         HighScoreTeam = Teams.GetHighestScoring();
         UnluckyTeam = Teams.GetUnluckiestLoss();
         DominantTeam = Teams.GetDominantVictory();
