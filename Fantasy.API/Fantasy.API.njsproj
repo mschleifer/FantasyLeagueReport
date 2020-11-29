@@ -30,7 +30,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include=".funcignore" />
-    <Content Include=".gitignore" />
     <Content Include="Boxscore\function.json" />
     <Content Include="Boxscore\index.js" />
     <Content Include="host.json" />
