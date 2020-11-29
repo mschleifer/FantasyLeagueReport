@@ -584,10 +584,7 @@ video {
 
 html, body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-.content {
-  padding-top: 1.1rem;
+  color: #494949;
 }
 
 .valid.modified:not([type=checkbox]) {
@@ -619,6 +616,57 @@ html, body {
   position: absolute;
   right: 0.75rem;
   top: 0.5rem;
+}
+
+.loading-bar {
+  position: absolute;
+  top: calc(50% - 3px);
+  left: calc(50% - 250px);
+  width: 500px;
+  height: 6px;
+  background-color: white;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2)
+}
+
+.loading-bar::after {
+  content: '';
+  display: block;
+  width: 200px;
+  height: 100%;
+  background-color: rgb(153, 27, 27);
+  -webkit-animation: progressbar-slide 1s infinite;
+          animation: progressbar-slide 1s infinite;
+  -webkit-animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes progressbar-slide {
+  0% {
+    transform: translateX(-200px);
+  }
+
+  70% {
+    transform: translateX(500px);
+  }
+
+  100% {
+    transform: translateX(500px);
+  }
+}
+
+@keyframes progressbar-slide {
+  0% {
+    transform: translateX(-200px);
+  }
+
+  70% {
+    transform: translateX(500px);
+  }
+
+  100% {
+    transform: translateX(500px);
+  }
 }
 
 .space-y-0 > :not([hidden]) ~ :not([hidden]) {
