@@ -1,0 +1,42 @@
+﻿@*Based on https://github.com/mrpmorris/blazor-university/tree/master/src/TemplatedComponents/CreatingATabControl*@
+
+<CascadingValue Value="this">
+    <div class="flex mb-4" role="group">
+        @foreach (Tab tab in Tabs)
+        {
+            <button type="button"
+                    class="mx-4 font-semibold text-gray-500 @GetButtonClass(tab)"
+                    @onclick=@( () => ActivatePage(tab) )>
+                @tab.Title
+            </button>
+        }
+    </div>
+    @ChildContent
+</CascadingValue>
+
+@code {
+    // Next line is needed so we are able to add <Tab> components inside
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public Tab ActivePage { get; set; }
+    List<Tab> Tabs = new List<Tab>();
+
+    internal void AddPage(Tab tabPage)
+    {
+        Tabs.Add(tabPage);
+        if (Tabs.Count == 1)
+            ActivePage = tabPage;
+        StateHasChanged();
+    }
+
+    string GetButtonClass(Tab page)
+    {
+        return page == ActivePage ? "text-yellow-600" : "";
+    }
+
+    void ActivatePage(Tab page)
+    {
+        ActivePage = page;
+    }
+}

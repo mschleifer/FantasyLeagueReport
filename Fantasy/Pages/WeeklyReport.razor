@@ -31,124 +31,127 @@ else
     <div class="flex flex-col px-4 bg-white">
         <h2 class="font-semibold text-xl mb-2">Rankings</h2>
         <div class="mx-8">
-            <ul class="flex mb-4">
-                <li class="mx-4 font-semibold text-gray-500">Team Awards</li>
-                <li class="mx-4 font-semibold text-gray-500">Player Awards</li>
-                <li class="mx-4 font-semibold text-gray-500">"Gooses"</li>
-            </ul>
-            <table class="table-fixed">
-                <thead>
-                    <tr>
-                        <th class="hidden">Icon</th>
-                        <th class="hidden">Category</th>
-                        <th class="hidden">Team(s)</th>
-                        <th class="hidden">Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-green-600 border-l-4">
-                        <td class="py-8 px-4">👑</td>
-                        <td class="px-4">Highest Scorer</td>
-                        <td class="px-4"> @string.Join(", ", HighScoreTeam.Select(x => x.Team.Name))</td>
-                        <td class="text-right px-4">@HighScoreTeam.First().Score pts</td>
-                    </tr>
-                    <tr class="border-yellow-600 border-l-4">
-                        <td class="py-8 px-4">🍀</td>
-                        <td class="px-4">Most Unlucky</td>
-                        <td class="px-4">@string.Join(", ", UnluckyTeam.Select(x => x.Team.Name))</td>
-                        <td class="text-right px-4">@UnluckyTeam.First().Score to @Teams.FindById(UnluckyTeam.First().OpposingTeamId).Score</td>
-                    </tr>
-                    <tr class="border-green-600 border-l-4">
-                        <td class="py-8 px-4">💪</td>
-                        <td class="px-4">Most Dominant Win</td>
-                        <td class="px-4">@string.Join(", ", DominantTeam.Select(x => x.Team.Name))</td>
-                        <td class="text-right px-4">+@Teams.GetMarginalScoreForTeam(DominantTeam.First().Team.Id) pts</td>
-                    </tr>
-                    <tr class="border-yellow-600 border-l-4">
-                        <td class="py-8 px-4">📏</td>
-                        <td class="px-4">Narrowest Loss</td>
-                        <td class="px-4">@string.Join(", ", NarrowLossTeam.Select(x => x.Team.Name))</td>
-                        <td class="text-right px-4">@Teams.GetMarginalScoreForTeam(NarrowLossTeam.First().Team.Id) pts</td>
-                    </tr>
-                </tbody>
-            </table>
+            <TabSet>
+                <Tab Title="Team Awards">
+                    <table class="table-fixed">
+                        <thead>
+                            <tr>
+                                <th class="hidden">Icon</th>
+                                <th class="hidden">Category</th>
+                                <th class="hidden">Team(s)</th>
+                                <th class="hidden">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-green-600 border-l-4">
+                                <td class="py-8 px-4">👑</td>
+                                <td class="px-4">Highest Scorer</td>
+                                <td class="px-4"> @string.Join(", ", HighScoreTeam.Select(x => x.Team.Name))</td>
+                                <td class="text-right px-4">@HighScoreTeam.First().Score pts</td>
+                            </tr>
+                            <tr class="border-yellow-600 border-l-4">
+                                <td class="py-8 px-4">🍀</td>
+                                <td class="px-4">Most Unlucky</td>
+                                <td class="px-4">@string.Join(", ", UnluckyTeam.Select(x => x.Team.Name))</td>
+                                <td class="text-right px-4">@UnluckyTeam.First().Score to @Teams.FindById(UnluckyTeam.First().OpposingTeamId).Score</td>
+                            </tr>
+                            <tr class="border-green-600 border-l-4">
+                                <td class="py-8 px-4">💪</td>
+                                <td class="px-4">Most Dominant Win</td>
+                                <td class="px-4">@string.Join(", ", DominantTeam.Select(x => x.Team.Name))</td>
+                                <td class="text-right px-4">+@Teams.GetMarginalScoreForTeam(DominantTeam.First().Team.Id) pts</td>
+                            </tr>
+                            <tr class="border-yellow-600 border-l-4">
+                                <td class="py-8 px-4">📏</td>
+                                <td class="px-4">Narrowest Loss</td>
+                                <td class="px-4">@string.Join(", ", NarrowLossTeam.Select(x => x.Team.Name))</td>
+                                <td class="text-right px-4">@Teams.GetMarginalScoreForTeam(NarrowLossTeam.First().Team.Id) pts</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            <table class="table-fixed">
-                <thead>
-                    <tr>
-                        <th class="hidden">Icon</th>
-                        <th class="hidden">Position</th>
-                        <th class="hidden">Score</th>
-                        <th class="hidden">Player(s)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-green-600 border-l-4">
-                        <td class="py-8 px-4">🔥</td>
-                        <td class="px-4">QB</td>
-                        <td class="px-4">@TopQB.First().BoxScore.TotalPoints pts</td>
-                        <td class="text-right px-4">@string.Join(", ", TopQB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
-                    </tr>
-                    <tr class="border-green-600 border-l-4">
-                        <td class="py-8 px-4">🔥</td>
-                        <td class="px-4">RB</td>
-                        <td class="px-4">@TopRB.First().BoxScore.TotalPoints pts</td>
-                        <td class="text-right px-4">@string.Join(", ", TopRB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
-                    </tr>
-                    <tr class="border-green-600 border-l-4">
-                        <td class="py-8 px-4">🔥</td>
-                        <td class="px-4">WR</td>
-                        <td class="px-4">@TopWR.First().BoxScore.TotalPoints pts</td>
-                        <td class="text-right px-4">@string.Join(", ", TopWR.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
-                    </tr>
-                    <tr class="border-green-600 border-l-4">
-                        <td class="py-8 px-4">🔥</td>
-                        <td class="px-4">TE</td>
-                        <td class="px-4">@TopTE.First().BoxScore.TotalPoints pts</td>
-                        <td class="text-right px-4">@string.Join(", ", TopTE.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
-                    </tr>
-                    <tr class="border-green-600 border-l-4">
-                        <td class="py-8 px-4">🔥</td>
-                        <td class="px-4">DST</td>
-                        <td class="px-4">@TopDST.First().BoxScore.TotalPoints pts</td>
-                        <td class="text-right px-4">@string.Join(", ", TopDST.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
-                    </tr>
-                    <tr class="border-green-600 border-l-4">
-                        <td class="py-8 px-4">🤔</td>
-                        <td class="px-4">K</td>
-                        <td class="px-4">@TopK.First().BoxScore.TotalPoints pts</td>
-                        <td class="text-right px-4">@string.Join(", ", TopK.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
-                    </tr>
-                    <tr class="border-green-600 border-l-4">
-                        <td class="py-8 px-4">💺</td>
-                        <td class="px-4">Bench</td>
-                        <td class="px-4">@TopBench.First().BoxScore.TotalPoints pts</td>
-                        <td class="text-right px-4">@string.Join(", ", TopBench.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
-                    </tr>
-                </tbody>
-            </table>
+                </Tab>
+                <Tab Title="Player Awards">
+                    <table class="table-fixed">
+                        <thead>
+                            <tr>
+                                <th class="hidden">Icon</th>
+                                <th class="hidden">Position</th>
+                                <th class="hidden">Score</th>
+                                <th class="hidden">Player(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-green-600 border-l-4">
+                                <td class="py-8 px-4">🔥</td>
+                                <td class="px-4">QB</td>
+                                <td class="px-4">@TopQB.First().BoxScore.TotalPoints pts</td>
+                                <td class="text-right px-4">@string.Join(", ", TopQB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                            </tr>
+                            <tr class="border-green-600 border-l-4">
+                                <td class="py-8 px-4">🔥</td>
+                                <td class="px-4">RB</td>
+                                <td class="px-4">@TopRB.First().BoxScore.TotalPoints pts</td>
+                                <td class="text-right px-4">@string.Join(", ", TopRB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                            </tr>
+                            <tr class="border-green-600 border-l-4">
+                                <td class="py-8 px-4">🔥</td>
+                                <td class="px-4">WR</td>
+                                <td class="px-4">@TopWR.First().BoxScore.TotalPoints pts</td>
+                                <td class="text-right px-4">@string.Join(", ", TopWR.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                            </tr>
+                            <tr class="border-green-600 border-l-4">
+                                <td class="py-8 px-4">🔥</td>
+                                <td class="px-4">TE</td>
+                                <td class="px-4">@TopTE.First().BoxScore.TotalPoints pts</td>
+                                <td class="text-right px-4">@string.Join(", ", TopTE.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                            </tr>
+                            <tr class="border-green-600 border-l-4">
+                                <td class="py-8 px-4">🔥</td>
+                                <td class="px-4">DST</td>
+                                <td class="px-4">@TopDST.First().BoxScore.TotalPoints pts</td>
+                                <td class="text-right px-4">@string.Join(", ", TopDST.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                            </tr>
+                            <tr class="border-green-600 border-l-4">
+                                <td class="py-8 px-4">🤔</td>
+                                <td class="px-4">K</td>
+                                <td class="px-4">@TopK.First().BoxScore.TotalPoints pts</td>
+                                <td class="text-right px-4">@string.Join(", ", TopK.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                            </tr>
+                            <tr class="border-green-600 border-l-4">
+                                <td class="py-8 px-4">💺</td>
+                                <td class="px-4">Bench</td>
+                                <td class="px-4">@TopBench.First().BoxScore.TotalPoints pts</td>
+                                <td class="text-right px-4">@string.Join(", ", TopBench.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            <table class="table-fixed">
-                <thead>
-                    <tr>
-                        <th class="hidden">Icon</th>
-                        <th class="hidden">Position</th>
-                        <th class="hidden">Player Name</th>
-                        <th class="hidden">Team</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var player in GoosePlayers)
-                    {
-                        <tr class="border-green-600 border-l-4">
-                            <td class="py-8 px-4">🦢</td>
-                            <td class="px-4">@player.BoxScore.Position</td>
-                            <td class="px-4">@player.BoxScore.Player.FullName</td>
-                            <td class="text-right px-4">@player.FantasyTeam.Name</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                </Tab>
+                <Tab Title="Gooses">
+                    <table class="table-fixed">
+                        <thead>
+                            <tr>
+                                <th class="hidden">Icon</th>
+                                <th class="hidden">Position</th>
+                                <th class="hidden">Player Name</th>
+                                <th class="hidden">Team</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var player in GoosePlayers)
+                            {
+                                <tr class="border-green-600 border-l-4">
+                                    <td class="py-8 px-4">🦢</td>
+                                    <td class="px-4">@player.BoxScore.Position</td>
+                                    <td class="px-4">@player.BoxScore.Player.FullName</td>
+                                    <td class="text-right px-4">@player.FantasyTeam.Name</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </Tab>
+            </TabSet>
         </div>
     </div>
 }
