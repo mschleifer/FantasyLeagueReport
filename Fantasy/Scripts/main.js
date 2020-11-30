@@ -8,7 +8,7 @@
             var elem = document.querySelector(`#${elementId}`);
             var flkty = new Flickity(elem, {
                 freeScroll: true,
-                wrapAround: true
+                pageDots: false
             });
         }
     };
