@@ -580,6 +580,14 @@ video {
   }
 }
 
+a.active {
+  --tw-border-opacity: 1;
+  border-color: rgba(217, 119, 6, var(--tw-border-opacity));
+  border-top-width: 4px;
+  --tw-text-opacity: 1;
+  color: rgba(217, 119, 6, var(--tw-text-opacity));
+}
+
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {

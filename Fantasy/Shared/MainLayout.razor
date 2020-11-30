@@ -1,39 +1,34 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="bg-gray-50 border-b-2 border-gray-100">
-    <div class="flex bg-white">
-        <div class="w-1/4">
+<div class="bg-gray-50">
+    <div class="md:flex bg-white">
+        <div class="w-full md:w-1/4 flex justify-center md:justify-start">
             <img src="https://logoipsum.com/logo/logo-25.svg" alt="Logo" />
         </div>
-        <nav class="flex-grow">
+        <nav class="w-full md:w-1/2">
             <ul class="flex justify-evenly">
                 <li class="flex items-end">
                     <NavLink class="font-semibold" href="" Match="NavLinkMatch.All">
                         Home
                     </NavLink>
                 </li>
-                @*<li class="flex items-end"><a class="font-semibold text-yellow-600 border-t-4 border-yellow-600" href="#">Games</a></li>*@
                 <li class="flex items-end">
                     <NavLink class="font-semibold" href="counter">
                         Counter
                     </NavLink>
                 </li>
                 <li class="flex items-end">
-                    <NavLink class="font-semibold text-yellow-600 border-t-4 border-yellow-600" href="fetchdata">
-                        Fetch Data
+                    <NavLink class="font-semibold" href="fetchdata">
+                        Data
                     </NavLink>
                 </li>
                 <li class="flex items-end">
                     <NavLink class="font-semibold" href="weeklyreport/2020/10">
-                        Weekly Report
+                        Weekly
                     </NavLink>
                 </li>
             </ul>
         </nav>
-        <div class="w-1/4 justify-evenly flex self-center">
-            <div><a class="font-semibold" href="#">Log In</a></div>
-            <div><a class="font-semibold bg-red-800 text-white py-2 px-4" href="#">Sign Up</a></div>
-        </div>
     </div>
 
     @Body

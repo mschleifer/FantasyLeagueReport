@@ -75,4 +75,10 @@ html, body {
     }
 }
 
+@layer components {
+    a.active {
+        @apply text-yellow-600 border-t-4 border-yellow-600;
+    }
+}
+
 @tailwind utilities;
