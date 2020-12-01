@@ -1,65 +1,12 @@
 ﻿@tailwind base;
+
+@layer base {
+    html, body {
+        @apply text-gray-font;
+    }
+}
+
 @tailwind components;
-
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
-html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #494949;
-}
-
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
-}
-
-.invalid {
-    outline: 1px solid red;
-}
-
-.validation-message {
-    color: red;
-}
-
-#blazor-error-ui {
-    background: lightyellow;
-    bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
-    display: none;
-    left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
-}
-
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
-
-
-.loading-bar {
-    position: absolute;
-    top: calc(50% - 3px);
-    left: calc(50% - 250px);
-    width: 500px;
-    height: 6px;
-    background-color: white;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2)
-}
-
-    .loading-bar::after {
-        content: '';
-        display: block;
-        width: 200px;
-        height: 100%;
-        background-color: rgb(153, 27, 27);
-        animation: progressbar-slide 1s infinite;
-        animation-timing-function: ease-in-out;
-    }
 
 @keyframes progressbar-slide {
     0% {
@@ -77,8 +24,48 @@ html, body {
 
 @layer components {
     a.active {
-        @apply text-yellow-600 border-t-4 border-yellow-600;
+        @apply border-t-4 border-fantasy-green;
     }
+
+    .loading-bar {
+        position: absolute;
+        top: calc(50% - 3px);
+        left: calc(50% - 250px);
+        width: 500px;
+        height: 6px;
+        background-color: white;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2)
+    }
+
+        .loading-bar::after {
+            content: '';
+            display: block;
+            width: 200px;
+            height: 100%;
+            animation: progressbar-slide 1s infinite;
+            animation-timing-function: ease-in-out;
+            @apply bg-fantasy-green;
+        }
+
+    #blazor-error-ui {
+        background: lightyellow;
+        bottom: 0;
+        box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+        display: none;
+        left: 0;
+        padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+    }
+
+        #blazor-error-ui .dismiss {
+            cursor: pointer;
+            position: absolute;
+            right: 0.75rem;
+            top: 0.5rem;
+        }
 }
 
 @tailwind utilities;
