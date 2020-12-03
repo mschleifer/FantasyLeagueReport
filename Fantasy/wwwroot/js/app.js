@@ -19,7 +19,7 @@
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var flickity__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flickity */ \"./node_modules/flickity/js/index.js\");\n/* harmony import */ var flickity__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flickity__WEBPACK_IMPORTED_MODULE_0__);\n﻿;\r\n\r\n(function () {\r\n\r\n    // Global export\r\n    window.flickity = {\r\n        init: function (elementId) {\r\n            var elem = document.querySelector(`#${elementId}`);\r\n            var flkty = new (flickity__WEBPACK_IMPORTED_MODULE_0___default())(elem, {\r\n                freeScroll: true,\r\n                pageDots: false\r\n            });\r\n        }\r\n    };\r\n})();\r\n\n\n//# sourceURL=webpack://fantasy/./Scripts/main.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var flickity__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flickity */ \"./node_modules/flickity/js/index.js\");\n/* harmony import */ var flickity__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flickity__WEBPACK_IMPORTED_MODULE_0__);\n﻿;\r\n\r\n(function () {\r\n\r\n    // Global export\r\n    window.flickity = {\r\n        init: function (elementId) {\r\n            var elem = document.querySelector(`#${elementId}`);\r\n            var flkty = new (flickity__WEBPACK_IMPORTED_MODULE_0___default())(elem, {\r\n                freeScroll: true,\r\n                pageDots: false,\r\n                cellAlign: 'left'\r\n            });\r\n        }\r\n    };\r\n})();\r\n\n\n//# sourceURL=webpack://fantasy/./Scripts/main.js?");
 
 /***/ }),
 

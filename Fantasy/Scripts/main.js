@@ -8,7 +8,8 @@
             var elem = document.querySelector(`#${elementId}`);
             var flkty = new Flickity(elem, {
                 freeScroll: true,
-                pageDots: false
+                pageDots: false,
+                cellAlign: 'left'
             });
         }
     };

@@ -11,16 +11,17 @@
 else
 {
     @*Check https://dribbble.com/shots/14517208-Clivlend-Team-Ticket-Distributor for design inspiration*@
-    <div id="boxscores">
+    <div id="boxscores" class="px-2">
         @foreach (var boxscore in Teams.CreateBoxScores())
         {
-            <div class="border-2 border-red-800 m-4 p-2 flex flex-col gap-1 bg-white w-9/12 md:w-1/2 lg:w-1/4">
-                <div class="flex items-center gap-3">
+            var Team1Win = boxscore.Team1.Score > boxscore.Team2.Score;
+            <div class="m-4 p-2 flex flex-col bg-white rounded-lg shadow-md w-9/12 md:w-1/2 lg:w-1/4">
+                <div class="flex items-center gap-3 p-4 @(Team1Win ? "border-l-4 border-fantasy-green" : "")">
                     <img src="@boxscore.Team1.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg" />
                     <div class="flex-grow">@boxscore.Team1.Team.Name</div>
                     <div class="font-bold">@boxscore.Team1.Score</div>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 p-4 @(!Team1Win ? "border-l-4 border-fantasy-green" : "")">
                     <img src="@boxscore.Team2.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg" />
                     <div class="flex-grow">@boxscore.Team2.Team.Name</div>
                     <div class="font-bold">@boxscore.Team2.Score</div>
