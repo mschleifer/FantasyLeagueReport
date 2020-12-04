@@ -18,6 +18,7 @@ namespace Fantasy
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
 
             builder.Services.AddScoped<FantasyApiService, FantasyApiService>();
+            builder.Services.AddScoped<SimpleAppState, SimpleAppState>();
 
             await builder.Build().RunAsync();
         }

@@ -1,6 +1,5 @@
 ﻿using Fantasy.Models;
 using Fantasy.Models.ApiResponses;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -13,10 +12,12 @@ namespace Fantasy.Utilities
     public class FantasyApiService
     {
         private readonly HttpClient _httpClient;
+        private SimpleAppState _appState;
 
-        public FantasyApiService(HttpClient httpClient)
+        public FantasyApiService(HttpClient httpClient, SimpleAppState appState)
         {
             this._httpClient = httpClient;
+            this._appState = appState;
         }
 
         // TODO: Probably setup some kind of authorization on the api function
@@ -53,20 +54,28 @@ namespace Fantasy.Utilities
 
         public async Task<int> GetCurrentWeek()
         {
+            if(_appState.CurrentNFLSeasonWeek.HasValue)
+            {
+                return _appState.CurrentNFLSeasonWeek.Value;
+            }
+
             var response = await _httpClient.GetAsync($"https://fantasy.espn.com/apis/v3/games/ffl/seasons/2020?view=kona_game_state");
             var content = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
             {
                 // Could throw an exception or just provide a reasonable default
-                return 1;
+                _appState.SetCurrentNFLSeasonWeek(1);
+                return _appState.CurrentNFLSeasonWeek.Value;
             }
 
             using JsonDocument document = JsonDocument.Parse(content);
             JsonElement root = document.RootElement;
             JsonElement jsonElement = root.GetProperty("currentScoringPeriod").GetProperty("id");
+            var week = jsonElement.GetInt32();
+            _appState.SetCurrentNFLSeasonWeek(week);
 
-            return jsonElement.GetInt32();
+            return _appState.CurrentNFLSeasonWeek.Value;
         }
     }
 
