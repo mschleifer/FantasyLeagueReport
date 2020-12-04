@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Fantasy
@@ -25,7 +26,7 @@ namespace Fantasy
             var teams = await _httpClient.GetFromJsonAsync<List<Team>>($"/api/teams/551600/{seasonId}/{weekId}");
 
             var result = new List<TeamForWeek>();
-            foreach(var score in scores)
+            foreach (var score in scores)
             {
                 var homeTeam = new TeamForWeek
                 {
@@ -50,6 +51,23 @@ namespace Fantasy
             return result;
         }
 
+        public async Task<int> GetCurrentWeek()
+        {
+            var response = await _httpClient.GetAsync($"https://fantasy.espn.com/apis/v3/games/ffl/seasons/2020?view=kona_game_state");
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                // Could throw an exception or just provide a reasonable default
+                return 1;
+            }
+
+            using JsonDocument document = JsonDocument.Parse(content);
+            JsonElement root = document.RootElement;
+            JsonElement jsonElement = root.GetProperty("currentScoringPeriod").GetProperty("id");
+
+            return jsonElement.GetInt32();
+        }
     }
 
 }
