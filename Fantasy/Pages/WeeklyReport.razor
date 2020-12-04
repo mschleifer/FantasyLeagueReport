@@ -2,10 +2,12 @@
 @page "/weeklyreport/{seasonId:int}/{weekId:int}"
 @inject FantasyApiService MyApiService
 @inject IJSRuntime MyJSRuntime;
-@*TODO
-    -Header for weekly report page
-    -Remove extra header links
-*@
+
+<div class="flex justify-center">
+    <h1 class="md:w-1/2 text-2xl font-semibold text-center bg-white rounded-lg shadow-md p-4 m-4">
+        The @SeasonId Week @WeekId Report
+    </h1>
+</div>
 
 @if (Teams == null)
 {
