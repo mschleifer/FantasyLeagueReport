@@ -8,7 +8,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Fantasy
+namespace Fantasy.Utilities
 {
     public class FantasyApiService
     {

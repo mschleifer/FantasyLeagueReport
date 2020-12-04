@@ -1,4 +1,4 @@
-﻿namespace Fantasy
+﻿namespace Fantasy.Utilities
 {
     public class PositionType
     {
