@@ -2,11 +2,15 @@
 @page "/weeklyreport/{seasonId:int}/{weekId:int}"
 @inject FantasyApiService MyApiService
 @inject IJSRuntime MyJSRuntime;
-@*<h1>Weekly Report</h1>*@
+@*TODO
+    -Header for weekly report page
+    -Remove extra header links
+*@
 
 @if (Teams == null)
 {
-    <p><em>Retrieving boxscores...</em></p>
+    <div class="loading-bar__message">Fetching box scores...</div>
+    <div class="loading-bar"></div>
 }
 else
 {
@@ -185,15 +189,8 @@ else
 
         SeasonId = SeasonId ?? 2020;
         WeekId = WeekId ?? 10;
-    }
 
-    protected override async Task OnInitializedAsync()
-    {
-        Task<List<TeamForWeek>> taskA = MyApiService.GetAllTeamsForWeek(SeasonId.Value, WeekId.Value);
-        await taskA.ContinueWith(x =>
-        {
-            Teams = x.Result;
-        });
+        Teams = await MyApiService.GetAllTeamsForWeek(SeasonId.Value, WeekId.Value);
 
         HighScoreTeam = Teams.GetHighestScoring();
         UnluckyTeam = Teams.GetUnluckiestLoss();
@@ -207,6 +204,8 @@ else
         TopK = Teams.GetTopScoringK();
         TopBench = Teams.GetTopScoringBenchPlayer();
         GoosePlayers = Teams.GetZeroPointStarters();
+
+        StateHasChanged();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

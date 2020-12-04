@@ -615,6 +615,15 @@ a.active {
   background-color: rgba(57, 181, 74, var(--tw-bg-opacity));
 }
 
+.loading-bar__message {
+  position: absolute;
+  top: calc(50% - 2rem);
+  left: calc(50% - 250px);
+  width: 500px;
+  text-align: center;
+  font-weight: 600;
+}
+
 #blazor-error-ui {
   background: lightyellow;
   bottom: 0;
