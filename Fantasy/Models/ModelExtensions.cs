@@ -136,7 +136,7 @@ namespace Fantasy.Models
         {
             return teams.SelectMany(x => x.Lineup
                                           .Where(y => (y.Position != PositionType.Bench.Value && y.Position != PositionType.IR.Value) 
-                                                   && y.TotalPoints == 0)
+                                                   && y.TotalPoints <= 0)
                                           .Select(y => new PlayerForWeek { FantasyTeam = x.Team, BoxScore = y }));
         }
     }
