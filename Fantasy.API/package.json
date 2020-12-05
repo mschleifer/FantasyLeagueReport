@@ -6,6 +6,8 @@
     "start": "func start",
     "test": "echo \"No tests yet...\""
   },
+  "author": "Matthew Schleifer",
+  "license": "ISC",
   "dependencies": {
     "espn-fantasy-football-api": "^0.16.1"
   },
