@@ -14,7 +14,9 @@ namespace Fantasy.Models
     {
         public static TeamForWeek FindById(this IEnumerable<TeamForWeek> teams, int id)
         {
-            return teams.Single(x => x.Team.Id == id);
+            // If we can't find a team assume that what we're looking up is a BYE week stand-in
+            var team = teams.SingleOrDefault(x => x.Team.Id == id);
+            return team ?? new TeamForWeek { Team = new ApiResponses.Team { Name = "BYE", _retrievedLogo = "/img/fantasy-logo.png" } };
         }
 
         public static IList<(TeamForWeek Team1, TeamForWeek Team2)> CreateBoxScores(this IEnumerable<TeamForWeek> teams)
@@ -22,7 +24,7 @@ namespace Fantasy.Models
             var result = new List<(TeamForWeek Team1, TeamForWeek Team2)>();
             foreach (var team in teams)
             {
-                if(!result.Any(x => x.Team1.Team.Id == team.Team.Id || x.Team2.Team.Id == team.Team.Id))
+                if (!result.Any(x => x.Team1.Team.Id == team.Team.Id || x.Team2.Team.Id == team.Team.Id))
                 {
                     var opposingTeam = teams.FindById(team.OpposingTeamId);
                     result.Add((Team1: team, Team2: opposingTeam));
@@ -135,7 +137,7 @@ namespace Fantasy.Models
         public static IEnumerable<PlayerForWeek> GetZeroPointStarters(this IEnumerable<TeamForWeek> teams)
         {
             return teams.SelectMany(x => x.Lineup
-                                          .Where(y => (y.Position != PositionType.Bench.Value && y.Position != PositionType.IR.Value) 
+                                          .Where(y => (y.Position != PositionType.Bench.Value && y.Position != PositionType.IR.Value)
                                                    && y.TotalPoints <= 0)
                                           .Select(y => new PlayerForWeek { FantasyTeam = x.Team, BoxScore = y }));
         }

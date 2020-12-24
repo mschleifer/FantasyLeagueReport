@@ -29,7 +29,7 @@ namespace Fantasy.Utilities
             var result = new List<TeamForWeek>();
             foreach (var score in scores)
             {
-                var homeTeam = new TeamForWeek
+                var homeTeamForWeek = new TeamForWeek
                 {
                     Team = teams.Single(x => x.Id == score.HomeTeamId),
                     OpposingTeamId = score.AwayTeamId,
@@ -37,16 +37,21 @@ namespace Fantasy.Utilities
                     Lineup = score.HomeRoster
                 };
 
-                var awayTeam = new TeamForWeek
-                {
-                    Team = teams.Single(x => x.Id == score.AwayTeamId),
-                    OpposingTeamId = score.HomeTeamId,
-                    Score = score.AwayScore,
-                    Lineup = score.AwayRoster
-                };
+                result.Add(homeTeamForWeek);
 
-                result.Add(homeTeam);
-                result.Add(awayTeam);
+                var awayTeam = teams.SingleOrDefault(x => x.Id == score.AwayTeamId);
+                if (awayTeam != null)
+                {
+                    var awayTeamForWeek = new TeamForWeek
+                    {
+                        Team = awayTeam,
+                        OpposingTeamId = score.HomeTeamId,
+                        Score = score.AwayScore,
+                        Lineup = score.AwayRoster
+                    };
+
+                    result.Add(awayTeamForWeek);
+                }
             }
 
             return result;
@@ -54,7 +59,7 @@ namespace Fantasy.Utilities
 
         public async Task<int> GetCurrentWeek()
         {
-            if(_appState.CurrentNFLSeasonWeek.HasValue)
+            if (_appState.CurrentNFLSeasonWeek.HasValue)
             {
                 return _appState.CurrentNFLSeasonWeek.Value;
             }
