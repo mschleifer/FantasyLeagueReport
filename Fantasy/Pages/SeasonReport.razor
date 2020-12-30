@@ -1,0 +1,46 @@
+﻿@page "/seasonreport"
+@inject FantasyApiService MyApiService
+
+<h3>2020 Season Report</h3>
+
+@*TODO
+    *Get all scores for all teams for all weeks
+    *Foreach teamA
+    *  Foreach otherTeamB
+    *    Foreach week
+    *      Compare teamA's score to otherTeamB's opponent's score
+    *      Tally up wins if teamA had otherTeamB's schedule
+    *      Add to List<Dictionary<string otherTeamB, int wins>>
+    *
+    *We're looking for the team who has the biggest increase in wins with someone else's schedule
+    *E.G. "If Team Cossacks had Big Jakes schedule they would have been 12-1 instead of 7-6"
+    *We could also graph a matrix of each team's record with each other team's schedule and highlight
+    *the biggest gain as well as the team's with the easiest and hardest schedule
+*@
+
+@if (SeasonDictionary == null)
+{
+    <div class="loading-bar__message">Fetching season stats...</div>
+    <div class="loading-bar"></div>
+}
+else
+{
+    foreach (var key in SeasonDictionary.Keys)
+    {
+        <text>@key</text>
+    }
+}
+
+@code {
+
+    private Dictionary<int, List<TeamForWeek>> SeasonDictionary;
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+
+        //SeasonDictionary = await MyApiService.GetAllWeeksForSeason(2020);
+
+        StateHasChanged();
+    }
+}
