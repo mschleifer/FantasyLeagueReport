@@ -9,7 +9,6 @@
   "author": "Matthew Schleifer",
   "license": "ISC",
   "dependencies": {
-    "espn-fantasy-football-api": "^0.16.1"
   },
   "devDependencies": {}
 }
