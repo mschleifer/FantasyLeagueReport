@@ -1,5 +1,6 @@
 ﻿using Fantasy.Models;
 using Fantasy.Models.ApiResponses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -20,21 +21,47 @@ namespace Fantasy.Utilities
             this._appState = appState;
         }
 
-        // TODO: New api call to get all matchup scores for entire season (to replace calling each week separately)
-        // This will require creating a azure function and modifying the underlying espn api NPM package with a function
-        // that calls https://fantasy.espn.com/apis/v3/games/ffl/seasons/2020/segments/0/leagues/<leagueId>?view=mMatchupScore
-
-        public async Task<Dictionary<int, List<TeamForWeek>>> GetAllWeeksForSeason(int seasonId)
+        public async Task<IEnumerable<Team>> GetAllTeams(int seasonId)
         {
-            for(int i = 1; i < 17; i++)
+            var currentWeek = await GetCurrentWeek();
+            return await _httpClient.GetFromJsonAsync<List<Team>>($"/api/teams/551600/{seasonId}/{currentWeek}");
+        }
+
+        public async Task<IEnumerable<MatchupForWeek>> GetAllSeasonMatchups(int seasonId)
+        {
+            if (_appState.SeasonSummary == null)
             {
-                if(!_appState.SeasonWeeksDictionary.ContainsKey(i))
+                var result = new List<MatchupForWeek>();
+                var matchups = await _httpClient.GetFromJsonAsync<List<Matchup>>($"/api/season/551600/{seasonId}");
+                var teams = await GetAllTeams(seasonId);
+
+                foreach (var matchup in matchups)
                 {
-                    _appState.SetAllTeamsForWeek(await GetAllTeamsForWeek(seasonId, i), i);
+                    if (!teams.Any(x => x.Id == matchup.HomeTeamId)) { Console.WriteLine($"No team entry found for home team id {matchup.HomeTeamId} - week {matchup.MatchupPeriodId}"); }
+                    if (!teams.Any(x => x.Id == matchup.AwayTeamId)) { Console.WriteLine($"No team entry found for away team id {matchup.AwayTeamId} - week {matchup.MatchupPeriodId}"); }
+
+                    var detailedMatchup = new MatchupForWeek
+                    {
+                        MatchupPeriodId = matchup.MatchupPeriodId,
+                        HomeTeam = teams.SingleOrDefault(x => x.Id == matchup.HomeTeamId), // Exception
+                        AwayTeam = teams.SingleOrDefault(x => x.Id == matchup.AwayTeamId),
+                        HomeTeamScore = matchup.HomeScore,
+                        AwayTeamScore = matchup.AwayScore
+                    };
+
+                    result.Add(detailedMatchup);
                 }
+
+                _appState.SetSeasonSummary(result);
             }
 
-            return _appState.SeasonWeeksDictionary;
+            return _appState.SeasonSummary;
+        }
+
+        public async Task<IEnumerable<MatchupForWeek>> GetRegularSeasonMatchups(int seasonId)
+        {
+            return (await GetAllSeasonMatchups(seasonId)).Where(x => x.MatchupPeriodId <= 13);
+
         }
 
         public async Task<List<TeamForWeek>> GetAllTeamsForWeek(int seasonId, int weekId)

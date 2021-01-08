@@ -13,6 +13,8 @@ namespace Fantasy.Utilities
 
         public Dictionary<int, List<TeamForWeek>> SeasonWeeksDictionary { get; private set; }
 
+        public List<MatchupForWeek> SeasonSummary { get; private set; }
+
         public SimpleAppState()
         {
             SeasonWeeksDictionary = new Dictionary<int, List<TeamForWeek>>();
@@ -49,6 +51,11 @@ namespace Fantasy.Utilities
         public void SetAllTeamsForWeek(List<TeamForWeek> teams, int week)
         {
             SeasonWeeksDictionary[week] = teams;
+        }
+
+        public void SetSeasonSummary(List<MatchupForWeek> matchups)
+        {
+            SeasonSummary = matchups;
         }
     }
 }
