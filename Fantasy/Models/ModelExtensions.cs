@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fantasy.Models.ApiResponses;
 using Fantasy.Utilities;
 using static MoreLinq.Extensions.MaxByExtension;
 using static MoreLinq.Extensions.MinByExtension;
 
 namespace Fantasy.Models
 {
+    // TODO: These should really all get moved into 1 or more business logic classes
+
     /// <summary>
     /// Assumes the base list is a complete collection of all teams that played in a given week
     /// </summary>
@@ -140,6 +143,50 @@ namespace Fantasy.Models
                                           .Where(y => (y.Position != PositionType.Bench.Value && y.Position != PositionType.IR.Value)
                                                    && y.TotalPoints <= 0)
                                           .Select(y => new PlayerForWeek { FantasyTeam = x.Team, BoxScore = y }));
+        }
+
+        public static Dictionary<Team, Dictionary<Team, int>> GetTeamWinMatrix(this IEnumerable<MatchupForWeek> seasonMatchups, IEnumerable<Team> teams)
+        {
+            var winMatrix = new Dictionary<Team, Dictionary<Team, int>>();
+
+            foreach (var teamA in teams)
+            {
+                var otherTeams = teams.Where(x => x.Id != teamA.Id);
+
+                winMatrix.Add(teamA, new Dictionary<Team, int>() { [teamA] = teamA.Wins });
+
+                foreach (var teamB in otherTeams)
+                {
+                    var winsAsTeamB = 0;
+                    var teamBMatchups = seasonMatchups.Where(x => x.HomeTeam.Id == teamB.Id || x.AwayTeam.Id == teamB.Id);
+
+                    foreach (var teamBWeeklyMatchup in teamBMatchups)
+                    {
+                        var teamAWeeklyMatchup = seasonMatchups.Single(x => x.MatchupPeriodId == teamBWeeklyMatchup.MatchupPeriodId
+                                                                         && (x.HomeTeam.Id == teamA.Id || x.AwayTeam.Id == teamA.Id));
+
+                        var teamAScore = teamAWeeklyMatchup.HomeTeam.Id == teamA.Id ? teamAWeeklyMatchup.HomeTeamScore : teamAWeeklyMatchup.AwayTeamScore;
+
+                        if (teamBWeeklyMatchup.HomeTeam.Id == teamA.Id || teamBWeeklyMatchup.AwayTeam.Id == teamA.Id)
+                        {
+                            // If teamA played teamB this week, just use the match up straight up
+                            var teamBScore = teamBWeeklyMatchup.HomeTeam.Id == teamB.Id ? teamBWeeklyMatchup.HomeTeamScore : teamBWeeklyMatchup.AwayTeamScore;
+
+                            winsAsTeamB = teamAScore > teamBScore ? winsAsTeamB + 1 : winsAsTeamB;
+                        }
+                        else
+                        {
+                            var teamBOppScore = teamBWeeklyMatchup.HomeTeam.Id == teamB.Id ? teamBWeeklyMatchup.AwayTeamScore : teamBWeeklyMatchup.HomeTeamScore;
+
+                            winsAsTeamB = teamAScore > teamBOppScore ? winsAsTeamB + 1 : winsAsTeamB;
+                        }
+                    }
+
+                    winMatrix[teamA].Add(teamB, winsAsTeamB - teamA.Wins);
+                }
+            }
+
+            return winMatrix;
         }
     }
 }
