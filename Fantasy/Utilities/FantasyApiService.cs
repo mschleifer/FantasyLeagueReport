@@ -24,7 +24,7 @@ namespace Fantasy.Utilities
         public async Task<IEnumerable<Team>> GetAllTeams(int seasonId)
         {
             var currentWeek = await GetCurrentWeek();
-            return await _httpClient.GetFromJsonAsync<List<Team>>($"/api/teams/551600/{seasonId}/{currentWeek}");
+            return await _httpClient.GetFromJsonAsync<List<Team>>($"/api/teams/551600/{seasonId}/{currentWeek}"); //1631501292
         }
 
         public async Task<IEnumerable<MatchupForWeek>> GetAllSeasonMatchups(int seasonId)
@@ -114,7 +114,7 @@ namespace Fantasy.Utilities
                 return _appState.CurrentNFLSeasonWeek.Value;
             }
 
-            var response = await _httpClient.GetAsync($"https://fantasy.espn.com/apis/v3/games/ffl/seasons/2020?view=kona_game_state");
+            var response = await _httpClient.GetAsync($"https://fantasy.espn.com/apis/v3/games/ffl/seasons/2021?view=kona_game_state");
             var content = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)

@@ -189,7 +189,7 @@ else
     {
         await base.SetParametersAsync(parameters);
 
-        SeasonId = SeasonId ?? DateTime.Now.Year;
+        SeasonId = SeasonId ?? 2021;
         WeekId = WeekId ?? await MyApiService.GetCurrentWeek() - 1;
 
         Teams = await MyApiService.GetAllTeamsForWeek(SeasonId.Value, WeekId.Value);
