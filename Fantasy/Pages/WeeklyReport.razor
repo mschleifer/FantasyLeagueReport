@@ -5,7 +5,14 @@
 
 <div class="flex justify-center">
     <h1 class="md:w-1/2 text-2xl font-semibold text-center bg-white rounded-lg shadow-md p-4 m-4">
-        The @SeasonId Week @WeekId Report
+        @if(WeekId.HasValue)
+        {
+          <span>The @SeasonId Week @WeekId Report</span>
+        }
+        else
+        {
+            <span>The @SeasonId Weekly Report</span>
+        }
     </h1>
 </div>
 
@@ -20,14 +27,15 @@ else
     <div id="boxscores" class="px-2">
         @foreach (var boxscore in Teams.CreateBoxScores())
         {
-            var Team1Win = boxscore.Team1.Score > boxscore.Team2.Score;
+            var Team1Win = boxscore.Team1.Score >= boxscore.Team2.Score;
+            var Team2Win = boxscore.Team1.Score <= boxscore.Team2.Score;
             <div class="m-4 p-2 flex flex-col bg-white rounded-lg shadow-md w-9/12 md:w-1/2 lg:w-1/4">
                 <div class="flex items-center gap-3 p-4 @(Team1Win ? "border-l-4 border-fantasy-green" : "")">
                     <img src="@boxscore.Team1.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg" />
                     <div class="flex-grow">@boxscore.Team1.Team.Name</div>
                     <div class="font-bold">@boxscore.Team1.Score</div>
                 </div>
-                <div class="flex items-center gap-3 p-4 @(!Team1Win ? "border-l-4 border-fantasy-green" : "")">
+                <div class="flex items-center gap-3 p-4 @(Team2Win ? "border-l-4 border-fantasy-green" : "")">
                     <img src="@boxscore.Team2.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg" />
                     <div class="flex-grow">@boxscore.Team2.Team.Name</div>
                     <div class="font-bold">@boxscore.Team2.Score</div>
@@ -37,7 +45,7 @@ else
     </div>
 
     <div class="flex flex-col px-4">
-        <h2 class="font-semibold text-xl mb-2">Rankings</h2>
+        <h2 class="font-semibold text-xl mb-2">Awards</h2>
         <div class="md:mx-8">
             <TabSet>
                 <Tab Title="Team Awards">
@@ -51,30 +59,22 @@ else
                             </div>
                         </div>
                         <div role="rowgroup">
-                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                <div role="cell" class="flex-none py-6 px-4">👑</div>
-                                <div role="cell" class="w-44 px-4">Highest Scorer</div>
-                                <div role="cell" class="w-1/3 px-4">@string.Join(", ", HighScoreTeam.Select(x => x.Team.Name))</div>
-                                <div role="cell" class="flex-grow text-right px-4">@HighScoreTeam.First().Score pts</div>
-                            </div>
-                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                <span role="cell" class="flex-none py-6 px-4">🍀</span>
-                                <span role="cell" class="w-44 px-4">Most Unlucky</span>
-                                <span role="cell" class="w-1/3 px-4">@string.Join(", ", UnluckyTeam.Select(x => x.Team.Name))</span>
-                                <span role="cell" class="flex-grow text-right px-4">@UnluckyTeam.First().Score to @Teams.FindById(UnluckyTeam.First().OpposingTeamId).Score</span>
-                            </div>
-                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                <span role="cell" class="flex-none py-6 px-4">💪</span>
-                                <span role="cell" class="w-44 px-4">Most Dominant Win</span>
-                                <span role="cell" class="w-1/3 px-4">@string.Join(", ", DominantTeam.Select(x => x.Team.Name))</span>
-                                <span role="cell" class="flex-grow text-right px-4">+@Teams.GetMarginalScoreForTeam(DominantTeam.First().Team.Id) pts</span>
-                            </div>
-                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                <span role="cell" class="flex-none py-6 px-4">📏</span>
-                                <span role="cell" class="w-44 px-4">Narrowest Loss</span>
-                                <span role="cell" class="w-1/3 px-4">@string.Join(", ", NarrowLossTeam.Select(x => x.Team.Name))</span>
-                                <span role="cell" class="flex-grow text-right px-4">@Teams.GetMarginalScoreForTeam(NarrowLossTeam.First().Team.Id) pts</span>
-                            </div>
+                            <TeamAwardTableRow Icon="👑"
+                                               Category="Highest Scorer"
+                                               Score=@HighScoreTeam.First().Score
+                                               Teams=@HighScoreTeam></TeamAwardTableRow>
+                            <TeamAwardTableRow Icon="🍀"
+                                               Category="Most Unlucky"
+                                               Score=@UnluckyTeam.First().Score
+                                               Teams=@UnluckyTeam></TeamAwardTableRow>
+                            <TeamAwardTableRow Icon="💪"
+                                               Category="Most Dominant Win"
+                                               Score=@DominantTeam.First().Score
+                                               Teams=@DominantTeam></TeamAwardTableRow>
+                            <TeamAwardTableRow Icon="📏"
+                                               Category="Narrowest Loss"
+                                               Score=@NarrowLossTeam.First().Score
+                                               Teams=@NarrowLossTeam></TeamAwardTableRow>
                         </div>
                     </div>
                 </Tab>
@@ -90,53 +90,39 @@ else
                             </div>
                         </div>
                         <div role="rowgroup">
-                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                <div role="cell" class="flex-none py-6 px-4">🔥</div>
-                                <div role="cell" class="w-20 px-4">QB</div>
-                                <div role="cell" class="flex-grow px-4">@TopQB.First().BoxScore.TotalPoints pts</div>
-                                <div role="cell" class="w-1/2 px-4">@string.Join(", ", TopQB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</div>
-                            </div>
-                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                <div role="cell" class="flex-none py-6 px-4">🔥</div>
-                                <div role="cell" class="w-20 px-4">RB</div>
-                                <div role="cell" class="flex-grow px-4">@TopRB.First().BoxScore.TotalPoints pts</div>
-                                <div role="cell" class="w-1/2 px-4">@string.Join(", ", TopRB.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</div>
-                            </div>
-                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                <div role="cell" class="flex-none py-6 px-4">🔥</div>
-                                <div role="cell" class="w-20 px-4">WR</div>
-                                <div role="cell" class="flex-grow px-4">@TopWR.First().BoxScore.TotalPoints pts</div>
-                                <div role="cell" class="w-1/2 px-4">@string.Join(", ", TopWR.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</div>
-                            </div>
-                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                <div role="cell" class="flex-none py-6 px-4">🔥</div>
-                                <div role="cell" class="w-20 px-4">TE</div>
-                                <div role="cell" class="flex-grow px-4">@TopTE.First().BoxScore.TotalPoints pts</div>
-                                <div role="cell" class="w-1/2 px-4">@string.Join(", ", TopTE.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</div>
-                            </div>
-                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                <div role="cell" class="flex-none py-6 px-4">🔥</div>
-                                <div role="cell" class="w-20 px-4">DST</div>
-                                <div role="cell" class="flex-grow px-4">@TopDST.First().BoxScore.TotalPoints pts</div>
-                                <div role="cell" class="w-1/2 px-4">@string.Join(", ", TopDST.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</div>
-                            </div>
-                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                <div role="cell" class="flex-none py-6 px-4">🤔</div>
-                                <div role="cell" class="w-20 px-4">K</div>
-                                <div role="cell" class="flex-grow px-4">@TopK.First().BoxScore.TotalPoints pts</div>
-                                <div role="cell" class="w-1/2 px-4">@string.Join(", ", TopK.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</div>
-                            </div>
-                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                <div role="cell" class="flex-none py-6 px-4">💺</div>
-                                <div role="cell" class="w-20 px-4">Bench</div>
-                                <div role="cell" class="flex-grow px-4">@TopBench.First().BoxScore.TotalPoints pts</div>
-                                <div role="cell" class="w-1/2 px-4">@string.Join(", ", TopBench.Select(x => $"{x.BoxScore.Player.FullName} ({x.FantasyTeam.Name})"))</div>
-                            </div>
+                            <PlayerAwardTableRow Icon="🔥" 
+                                                 Position="QB" 
+                                                 Score=@(TopQB.First().BoxScore.TotalPoints) 
+                                                 Players=@TopQB></PlayerAwardTableRow>
+                            <PlayerAwardTableRow Icon="🔥" 
+                                                 Position="RB" 
+                                                 Score=@(TopRB.First().BoxScore.TotalPoints) 
+                                                 Players=@TopRB></PlayerAwardTableRow>
+                            <PlayerAwardTableRow Icon="🔥" 
+                                                 Position="WR" 
+                                                 Score=@(TopWR.First().BoxScore.TotalPoints) 
+                                                 Players=@TopWR></PlayerAwardTableRow>
+                            <PlayerAwardTableRow Icon="🔥" 
+                                                 Position="TE" 
+                                                 Score=@(TopTE.First().BoxScore.TotalPoints) 
+                                                 Players=@TopTE></PlayerAwardTableRow>
+                            <PlayerAwardTableRow Icon="🔥" 
+                                                 Position="DST" 
+                                                 Score=@(TopDST.First().BoxScore.TotalPoints) 
+                                                 Players=@TopDST></PlayerAwardTableRow>
+                            <PlayerAwardTableRow Icon="🤔" 
+                                                 Position="K" 
+                                                 Score=@(TopK.First().BoxScore.TotalPoints) 
+                                                 Players=@TopK></PlayerAwardTableRow>
+                            <PlayerAwardTableRow Icon="💺" 
+                                                 Position="BENCH" 
+                                                 Score=@(TopBench.First().BoxScore.TotalPoints) 
+                                                 Players=@TopBench></PlayerAwardTableRow>
                         </div>
                     </div>
                 </Tab>
 
-                <Tab Title="Gooses">
+                <Tab Title="@("\"Gooses\"")">
                     <div role="table" class="max-w-2xl" aria-label="Goose Players" aria-rowcount="@GoosePlayers.Count()">
                         <div role="rowgroup">
                             <div class="table-row" role="row">
@@ -144,18 +130,20 @@ else
                                 <span role="columnheader" class="hidden">Position</span>
                                 <span role="columnheader" class="hidden">Player Name</span>
                                 <span role="columnheader" class="hidden">Team</span>
+                                <span role="columnheader" class="hidden">Points</span>
                             </div>
                         </div>
                         <div role="rowgroup">
-                            @foreach (var player in GoosePlayers)
-                            {
-                                <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
-                                    <div role="cell" class="flex-none py-6 px-4">🦢</div>
-                                    <div role="cell" class="w-20 px-4">@player.BoxScore.Position</div>
-                                    <div role="cell" class="flex-grow px-4">@player.BoxScore.Player.FullName</div>
-                                    <div role="cell" class="w-1/2 px-4">@player.FantasyTeam.Name</div>
-                                </div>
-                            }
+                        @foreach (var player in GoosePlayers)
+                        {
+                            <div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
+                                <div role="cell" class="flex-none py-6 px-2 sm:px-4">🦢</div>
+                                <div role="cell" class="w-20 px-2 sm:px-4">@player.BoxScore.Position</div>
+                                <div role="cell" class="w-1/3 px-2 sm:px-4">@player.BoxScore.Player.FullName</div>
+                                <div role="cell" class="w-1/3 px-2 sm:px-4">@player.FantasyTeam.Name</div>
+                                <div role="cell" class="flex-grow text-right px-2 sm:px-4">@player.BoxScore.TotalPoints pts</div>
+                            </div>
+                        }
                         </div>
                     </div>
                 </Tab>

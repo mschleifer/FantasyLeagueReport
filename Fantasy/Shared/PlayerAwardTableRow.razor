@@ -1,0 +1,22 @@
+﻿<div role="row" class="flex items-center bg-white rounded-lg my-4 shadow-md">
+    <div role="cell" class="flex-none py-6 px-2 sm:px-4">@Icon</div>
+    <div role="cell" class="w-20 px-2 sm:px-4">@Position</div>
+    <div role="cell" class="flex-grow px-2 sm:px-4">@Score pts</div>
+    <div role="cell" class="w-1/2 px-2 sm:px-4">
+        @foreach(var player in Players)
+        {
+            <div>@player.BoxScore.Player.FullName (@player.FantasyTeam.Name)</div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Icon { get; set; }
+    [Parameter]
+    public string Position { get; set; }
+    [Parameter]
+    public double Score { get; set; }
+    [Parameter]
+    public IEnumerable<PlayerForWeek> Players { get; set; }
+}
