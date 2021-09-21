@@ -152,6 +152,41 @@ else
             </TabSet>
         </div>
     </div>
+
+    <div class="flex flex-col">
+        <div class="bg-white rounded-lg shadow-md p-4 mx-2 my-4">
+            <h2 class="font-semibold text-xl mx-2 mb-4">
+                Week @WeekId Standings
+            </h2>
+            <div class="md:mx-8">
+                <table role="table" class="max-w-2xl" aria-label="Goose Players" aria-rowcount="@GoosePlayers.Count()">
+                    <thead role="rowgroup">
+                        <tr class="" role="row">
+                            <th role="columnheader" class=" py-6 px-2 sm:px-4">Team</th>
+                            <th role="columnheader" class=" py-6 px-2 sm:px-4">Playoff Seed</th>
+                            <th role="columnheader" class=" py-6 px-2 sm:px-4">Record</th>
+                            <th role="columnheader" class=" py-6 px-2 sm:px-4">Total Points</th>
+                        </tr>
+                    </thead>
+                    <tbody role="rowgroup">
+                    @foreach (var team in Teams.OrderBy(x => x.Team.PlayoffSeed))
+                    {
+                        <tr role="row" class="border-t-2 border-gray-200">
+                            <td role="cell" class="flex py-6 px-2 sm:px-4">
+                                <img src="@team.Team.LogoURL" alt="team logo" class="w-6 h-6 rounded-lg mr-2" />
+                                @team.Team.Name
+                            </td>
+                            <td role="cell" class="py-6 px-2 sm:px-4">@team.Team.PlayoffSeed</td>
+                            <td role="cell" class="py-6 px-2 sm:px-4">@team.Team.Wins-@team.Team.Losses-@team.Team.Ties</td>
+                            <td role="cell" class="py-6 px-2 sm:px-4">@team.Team.TotalPointsScored</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 }
 
 
