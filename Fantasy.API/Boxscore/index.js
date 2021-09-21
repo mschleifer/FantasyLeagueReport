@@ -5,7 +5,7 @@ module.exports = async function (context, req) {
     const { Client } = require('../espn-fantasy-api.js');
     context.log('ESPNFantasyAPI imported.');
 
-    const LEAGUE_ID = context.bindingData.leagueId; //551600, 1246423
+    const LEAGUE_ID = context.bindingData.leagueId; //551600 (RHP), 1246423, 1631501292 (DD)
     const SEASON_ID = context.bindingData.seasonId; //2020
     const WEEK_ID = context.bindingData.weekId; // e.g. 13
     const SWID = process.env["COOKIE_SWID"];
