@@ -1,6 +1,8 @@
 ﻿@inherits LayoutComponentBase
+@inject ProfileService myProfileService
+@implements IDisposable
 
-<div class="min-h-screen flex flex-col @(_darkMode ? "dark" : "")">
+<div class="min-h-screen flex flex-col @(DarkMode ? "dark" : "")">
     <div class="h-full bg-gray-100 pb-1 flex-grow dark:bg-darkest-gray dark:text-white">
         <div class="md:flex bg-white dark:bg-white-opacity-12 relative">
             <div class="w-full md:w-1/4 flex justify-center">
@@ -22,7 +24,7 @@
                     </li>
                 </ul>
             </nav>
-            <ThemeToggle OnDarkModeToggled="@HandleDarkModeToggled" />
+            <ThemeToggle />
         </div>
 
         @Body
@@ -31,10 +33,22 @@
 
 @code
 {
-    private bool _darkMode = false;
+    private bool DarkMode = false;
 
-    private void HandleDarkModeToggled(bool isDarkMode)
+    protected override async Task OnInitializedAsync()
     {
-        _darkMode = isDarkMode;
+        myProfileService.OnDarkModeChange += DarkModeChanged;
+        DarkMode = await myProfileService.GetDarkMode();
+    }
+
+    private void DarkModeChanged(bool newDarkModeSetting)
+    {
+        DarkMode = newDarkModeSetting;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        myProfileService.OnDarkModeChange -= DarkModeChanged;
     }
 }

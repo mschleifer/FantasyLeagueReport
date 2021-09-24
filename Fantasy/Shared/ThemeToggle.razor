@@ -1,5 +1,7 @@
 ﻿@*https://jonhilton.net/blazor-tailwind-dark-mode/*@
 @*https://www.section.io/engineering-education/implementing-dark-mode-using-tailwind-css/*@
+@inject ProfileService myProfileService
+@implements IDisposable
 
 <style>
     #checkbox:checked + .switch-ball {
@@ -22,7 +24,7 @@
             <input type="checkbox" name="checkbox" id="checkbox" class="hidden" checked="@DarkMode" @onchange="Toggle" />
             <div class="w-4 h-4 bg-white rounded-full shadow switch-ball"></div>
         </div>
-        
+
     </label>
 </div>
 
@@ -30,12 +32,25 @@
 
     private bool DarkMode = false;
 
-    [Parameter]
-    public EventCallback<bool> OnDarkModeToggled { get; set; }
-
-    private void Toggle()
+    protected override async Task OnInitializedAsync()
     {
-        DarkMode = !DarkMode;
-        OnDarkModeToggled.InvokeAsync(DarkMode);
+        myProfileService.OnDarkModeChange += DarkModeChanged;
+        DarkMode = await myProfileService.GetDarkMode();
+    }
+
+    private void DarkModeChanged(bool newDarkModeSetting)
+    {
+        DarkMode = newDarkModeSetting;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        myProfileService.OnDarkModeChange -= DarkModeChanged;
+    }
+
+    private async Task Toggle()
+    {
+        await myProfileService.ToggleDarkMode();
     }
 }

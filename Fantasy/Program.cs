@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Fantasy.Utilities;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,8 @@ namespace Fantasy
 
             builder.Services.AddScoped<FantasyApiService, FantasyApiService>();
             builder.Services.AddScoped<SimpleAppState, SimpleAppState>();
+            builder.Services.AddScoped<ProfileService>();
+            builder.Services.AddBlazoredLocalStorage();
 
             await builder.Build().RunAsync();
         }
