@@ -1,0 +1,41 @@
+﻿@*https://jonhilton.net/blazor-tailwind-dark-mode/*@
+@*https://www.section.io/engineering-education/implementing-dark-mode-using-tailwind-css/*@
+
+<style>
+    #checkbox:checked + .switch-ball {
+        background-color: #121212;
+        transform: translateX(19px);
+        transition: transform 0.3s linear;
+    }
+
+    #checkbox:not(:checked) + .switch-ball {
+        background-color: white;
+        transform: translateX(1px);
+        transition: transform 0.3s linear;
+    }
+</style>
+
+<div class="absolute top-0 right-0 m-1">
+    <label for="checkbox" class="cursor-pointer flex items-center">
+        <span>@(DarkMode ? "🌙" : "☀️")</span>
+        <div class="w-9 h-5 flex items-center bg-gray-300 rounded-full p2">
+            <input type="checkbox" name="checkbox" id="checkbox" class="hidden" checked="@DarkMode" @onchange="Toggle" />
+            <div class="w-4 h-4 bg-white rounded-full shadow switch-ball"></div>
+        </div>
+        
+    </label>
+</div>
+
+@code {
+
+    private bool DarkMode = false;
+
+    [Parameter]
+    public EventCallback<bool> OnDarkModeToggled { get; set; }
+
+    private void Toggle()
+    {
+        DarkMode = !DarkMode;
+        OnDarkModeToggled.InvokeAsync(DarkMode);
+    }
+}

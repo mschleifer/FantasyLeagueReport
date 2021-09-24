@@ -1,27 +1,40 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="bg-gray-100">
-    <div class="md:flex bg-white">
-        <div class="w-full md:w-1/4 flex justify-center">
-            <a href="">
-                <img src="/img/fantasy-logo.png" alt="Site logo" class="h-20 w-20" />
-            </a>
+<div class="min-h-screen flex flex-col @(_darkMode ? "dark" : "")">
+    <div class="h-full bg-gray-100 pb-1 flex-grow dark:bg-darkest-gray dark:text-white">
+        <div class="md:flex bg-white dark:bg-white-opacity-12 relative">
+            <div class="w-full md:w-1/4 flex justify-center">
+                <a href="">
+                    <img src="/img/fantasy-logo.png" alt="Site logo" class="h-20 w-20" />
+                </a>
+            </div>
+            <nav class="w-full md:w-1/2 text-lg">
+                <ul class="flex justify-evenly">
+                    <li class="flex items-end">
+                        <NavLink class="font-semibold pt-5" href="" Match="NavLinkMatch.All">
+                            Home
+                        </NavLink>
+                    </li>
+                    <li class="flex items-end">
+                        <NavLink class="font-semibold pt-5" href="weeklist">
+                            Reports
+                        </NavLink>
+                    </li>
+                </ul>
+            </nav>
+            <ThemeToggle OnDarkModeToggled="@HandleDarkModeToggled" />
         </div>
-        <nav class="w-full md:w-1/2 text-lg">
-            <ul class="flex justify-evenly">
-                <li class="flex items-end">
-                    <NavLink class="font-semibold pt-5" href="" Match="NavLinkMatch.All">
-                        Home
-                    </NavLink>
-                </li>
-                <li class="flex items-end">
-                    <NavLink class="font-semibold pt-5" href="weeklist">
-                        Reports
-                    </NavLink>
-                </li>
-            </ul>
-        </nav>
-    </div>
 
-    @Body
+        @Body
+    </div>
 </div>
+
+@code
+{
+    private bool _darkMode = false;
+
+    private void HandleDarkModeToggled(bool isDarkMode)
+    {
+        _darkMode = isDarkMode;
+    }
+}

@@ -5,7 +5,7 @@
         @foreach (Tab tab in Tabs)
         {
             <button type="button"
-                    class="mx-4 pb-2 font-semibold text-gray-500 @GetButtonClass(tab)"
+                    class="mx-4 pb-2 font-semibold text-gray-500 dark:text-white @GetButtonClass(tab)"
                     @onclick=@( () => ActivatePage(tab) )>
                 @tab.Title
             </button>

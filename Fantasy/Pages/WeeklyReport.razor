@@ -4,7 +4,7 @@
 @inject IJSRuntime MyJSRuntime;
 
 <div class="flex justify-center">
-    <h1 class="md:w-1/2 text-2xl font-semibold text-center bg-white rounded-lg shadow-md p-4 m-4">
+    <h1 class="md:w-1/2 text-2xl font-semibold text-center bg-white rounded-lg shadow-md p-4 m-4 dark:bg-white-opacity-12">
         @if(WeekId.HasValue)
         {
           <span>The @SeasonId Week @WeekId Report</span>
@@ -29,7 +29,7 @@ else
         {
             var Team1Win = boxscore.Team1.Score >= boxscore.Team2.Score;
             var Team2Win = boxscore.Team1.Score <= boxscore.Team2.Score;
-            <div class="m-4 p-2 flex flex-col bg-white rounded-lg shadow-md w-9/12 md:w-1/2 lg:w-1/4">
+            <div class="m-4 p-2 flex flex-col bg-white rounded-lg shadow-md w-9/12 md:w-1/2 lg:w-1/4 dark:bg-white-opacity-12">
                 <div class="flex items-center gap-3 p-4 @(Team1Win ? "border-l-4 border-fantasy-green" : "")">
                     <img src="@boxscore.Team1.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg" />
                     <div class="flex-grow">@boxscore.Team1.Team.Name</div>
@@ -45,7 +45,7 @@ else
     </div>
 
     <div class="flex justify-center">
-        <div class="bg-white rounded-lg shadow-md p-4 mx-2 my-4 flex-grow max-w-screen-md">
+        <div class="bg-white rounded-lg shadow-md p-4 mx-2 my-4 flex-grow max-w-screen-md dark:bg-white-opacity-12">
             <h2 class="font-semibold text-xl m-4">
                 Awards
             </h2>
@@ -156,7 +156,7 @@ else
     </div>
     
     <div class="flex justify-center">
-        <div class="bg-white rounded-lg shadow-md p-4 mx-2 my-4 flex-grow max-w-screen-md">
+        <div class="bg-white rounded-lg shadow-md p-4 mx-2 my-4 flex-grow max-w-screen-md dark:bg-white-opacity-12">
             <h2 class="font-semibold text-xl mx-2 mb-4">
                 Week @WeekId Standings
             </h2>
