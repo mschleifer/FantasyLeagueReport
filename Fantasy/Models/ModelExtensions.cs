@@ -145,15 +145,19 @@ namespace Fantasy.Models
                                           .Select(y => new PlayerForWeek { FantasyTeam = x.Team, BoxScore = y }));
         }
 
-        public static Dictionary<Team, Dictionary<Team, int>> GetTeamWinMatrix(this IEnumerable<MatchupForWeek> seasonMatchups, IEnumerable<Team> teams)
+        /// <summary>
+        /// Returns a Dictionary of Dictonaries that contain the WIN DELTA for each team when given each other team's schedule
+        /// </summary>
+        public static Dictionary<Team, Dictionary<int, int>> GetTeamWinMatrix(this IEnumerable<MatchupForWeek> seasonMatchups, IEnumerable<Team> teams)
         {
-            var winMatrix = new Dictionary<Team, Dictionary<Team, int>>();
+            var winMatrix = new Dictionary<Team, Dictionary<int, int>>();
 
             foreach (var teamA in teams)
             {
                 var otherTeams = teams.Where(x => x.Id != teamA.Id);
 
-                winMatrix.Add(teamA, new Dictionary<Team, int>() { [teamA] = teamA.Wins });
+                winMatrix.Add(teamA, new Dictionary<int, int>() { [teamA.Id] = 0 });
+
 
                 foreach (var teamB in otherTeams)
                 {
@@ -182,7 +186,17 @@ namespace Fantasy.Models
                         }
                     }
 
-                    winMatrix[teamA].Add(teamB, winsAsTeamB - teamA.Wins);
+                    winMatrix[teamA].Add(teamB.Id, winsAsTeamB - teamA.Wins);
+                }
+            }
+
+            foreach (var key in winMatrix.Keys)
+            {
+                Console.WriteLine($"{key.Abbreviation} Wins");
+
+                foreach (var subKey in winMatrix[key].Keys)
+                {
+                    Console.WriteLine($"{winMatrix.Keys.Single(x => x.Id == subKey).Abbreviation}: {winMatrix[key][subKey]}");
                 }
             }
 
