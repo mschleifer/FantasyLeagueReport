@@ -102,7 +102,7 @@ else
     {
         await base.SetParametersAsync(parameters);
 
-        SeasonId = SeasonId ?? 2021;
+        SeasonId = SeasonId ?? Utilities.Helpers.GetCurrentSeason();
 
         SeasonMatchupList = await MyApiService.GetRegularSeasonMatchups(SeasonId.Value);
 

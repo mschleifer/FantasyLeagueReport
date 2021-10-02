@@ -114,7 +114,8 @@ namespace Fantasy.Utilities
                 return _appState.CurrentNFLSeasonWeek.Value;
             }
 
-            var response = await _httpClient.GetAsync($"https://fantasy.espn.com/apis/v3/games/ffl/seasons/2021?view=kona_game_state");
+            var currentSeason = Utilities.Helpers.GetCurrentSeason();
+            var response = await _httpClient.GetAsync($"https://fantasy.espn.com/apis/v3/games/ffl/seasons/{currentSeason}?view=kona_game_state");
             var content = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)

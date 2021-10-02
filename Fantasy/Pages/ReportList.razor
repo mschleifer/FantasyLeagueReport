@@ -1,0 +1,30 @@
+﻿@page "/reportlist"
+
+@inject FantasyApiService MyApiService
+
+<div class="bg-white rounded-lg shadow-md p-4 mx-2 my-4 flex-grow max-w-screen-md dark:bg-white-opacity-12">
+    <h1 class="text-xl font-semibold m-4">@CurrentSeason</h1>
+    <ul class="ml-8">
+        <li class="p-2"><a href="/seasonreport/@CurrentSeason">Season Report</a></li>
+        @for (int i = 1; i < CurrentWeek; i++)
+        {
+            <li class="p-2"><a href="/weeklyreport/@CurrentSeason/@i">Week @i</a></li>
+        }
+    </ul>
+</div>
+
+@code {
+    private int CurrentSeason { get; set; }
+    private int? CurrentWeek { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentSeason = Utilities.Helpers.GetCurrentSeason();
+
+        StateHasChanged();
+
+        CurrentWeek = await MyApiService.GetCurrentWeek();
+
+        StateHasChanged();
+    }
+}
