@@ -31,12 +31,12 @@ else
             var Team2Win = boxscore.Team1.Score <= boxscore.Team2.Score;
             <div class="m-4 p-2 flex flex-col bg-white rounded-lg shadow-md w-9/12 md:w-1/2 lg:w-1/4 dark:bg-white-opacity-12">
                 <div class="flex items-center gap-3 p-4 @(Team1Win ? "border-l-4 border-fantasy-green" : "")">
-                    <img src="@boxscore.Team1.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg" />
+                    <TeamLogo LogoUrl=@boxscore.Team1.Team.LogoURL Alt=@boxscore.Team1.Team.Name Size=14></TeamLogo>
                     <div class="flex-grow">@boxscore.Team1.Team.Name</div>
                     <div class="font-bold">@boxscore.Team1.Score</div>
                 </div>
                 <div class="flex items-center gap-3 p-4 @(Team2Win ? "border-l-4 border-fantasy-green" : "")">
-                    <img src="@boxscore.Team2.Team.LogoURL" alt="team logo" class="w-14 h-14 rounded-lg" />
+                    <TeamLogo LogoUrl=@boxscore.Team2.Team.LogoURL Alt=@boxscore.Team2.Team.Name Size=14></TeamLogo>
                     <div class="flex-grow">@boxscore.Team2.Team.Name</div>
                     <div class="font-bold">@boxscore.Team2.Score</div>
                 </div>
@@ -175,7 +175,7 @@ else
                     {
                         <tr role="row" class="border-t-2 border-gray-200">
                             <td role="cell" class="flex py-6 px-2 sm:px-4">
-                                <img src="@team.Team.LogoURL" alt="team logo" class="w-6 h-6 rounded-lg mr-2" />
+                                <TeamLogo LogoUrl=@team.Team.LogoURL Alt=@team.Team.Name Size=6 Class="mr-2"></TeamLogo>
                                 @team.Team.Name
                             </td>
                             <td role="cell" class="py-6 px-2 sm:px-4">@team.Team.PlayoffSeed</td>

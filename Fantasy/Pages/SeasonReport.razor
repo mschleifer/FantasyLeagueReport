@@ -3,9 +3,9 @@
 
 <div class="flex justify-center">
     <h1 class="md:w-1/2 text-2xl font-semibold text-center bg-white rounded-lg shadow-md p-4 m-4 dark:bg-white-opacity-12">
-        @if(SeasonId.HasValue)
+        @if (SeasonId.HasValue)
         {
-          <span>The @SeasonId Season Report</span>
+            <span>The @SeasonId Season Report</span>
         }
         else
         {
@@ -14,102 +14,11 @@
     </h1>
 </div>
 
-@if (SeasonMatchupList == null)
-{
-    <div class="loading-bar__message">Fetching season stats...</div>
-    <div class="loading-bar"></div>
-}
-else
-{
-    if (TeamWinMatrix == null)
-    {
-        <div class="loading-bar__message">Running calculations...</div>
-        <div class="loading-bar"></div>
-    }
-    else
-    {
-        <div class="flex flex-col m-2">
-            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <tr class="bg-white dark:bg-white-opacity-12">
-                                <td></td>
-                                @foreach (var team in TeamWinMatrix.Keys)
-                                {
-                                    //Horizontal header
-                                    <th scope="col" class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-white">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                            <img class="h-10 w-10 rounded-full" src="@team.LogoURL" alt="@team.Name" />
-                                        </div>
-                                    </th>
-                                }
-                            </tr>
-                            @foreach (var team in TeamWinMatrix.Keys)
-                            {
-                                <tr class="even:bg-white odd:bg-gray-50 divide-y divide-gray-200 dark:even:bg-white-opacity-12 dark:odd:bg-white-opacity-16">
-                                    @*Vertical header*@
-                                    <th scope="row" class="pl-4 py-2 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10">
-                                                <img class="h-10 w-10 rounded-full" src="@team.LogoURL" alt="@team.Name" />
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">@team.Abbreviation</div>
-                                            </div>
-                                        </div>
-                                    </th>
-
-                                    @foreach (var otherTeam in TeamWinMatrix.Keys)
-                                    {
-                                        var winsDifferential = @TeamWinMatrix[team][otherTeam.Id];
-                                        var positiveDifferential = (winsDifferential > 0);
-                                        var negativeDifferential = !(winsDifferential >= 0);
-                                        <td class="px-4 py-2 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900 dark:text-white">
-                                                @if (team.Id == otherTeam.Id)
-                                                {
-                                                    @:-
-                                                }
-                                                else
-                                                {
-                                                    @(positiveDifferential ? "+" : "")
-                                                    @winsDifferential
-                                                }
-                                            </div>
-                                        </td>
-                                    }
-                                </tr>
-                            }
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-}
+<ScheduleCompareTable SeasonId=@SeasonId></ScheduleCompareTable>
 
 
 @code {
 
     [Parameter]
     public int? SeasonId { get; set; }
-
-    private IEnumerable<MatchupForWeek> SeasonMatchupList;
-    private Dictionary<Team, Dictionary<int, int>> TeamWinMatrix;
-
-    public override async Task SetParametersAsync(ParameterView parameters)
-    {
-        await base.SetParametersAsync(parameters);
-
-        SeasonId = SeasonId ?? Utilities.Helpers.GetCurrentSeason();
-
-        SeasonMatchupList = await MyApiService.GetRegularSeasonMatchups(SeasonId.Value);
-
-        StateHasChanged();
-
-        TeamWinMatrix = SeasonMatchupList.GetTeamWinMatrix(await MyApiService.GetAllTeams(SeasonId.Value));
-
-        StateHasChanged();
-    }
 }

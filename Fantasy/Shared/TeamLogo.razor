@@ -1,0 +1,15 @@
+﻿<img class="@($"h-{Size} w-{Size} rounded-full {Class}")"
+     src="@LogoUrl"
+     alt="@Alt"
+     onerror="this.src='@($"https://placekitten.com/100/100?image={new Random().Next(48)}")'"/>
+
+@code {
+    [Parameter]
+    public string LogoUrl { get; set; }
+    [Parameter]
+    public string Alt { get; set; }
+    [Parameter]
+    public int Size { get; set; }
+    [Parameter]
+    public string Class { get; set; }
+}
