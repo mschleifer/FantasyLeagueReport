@@ -5,9 +5,9 @@
 
 <div class="flex justify-center">
     <h1 class="md:w-1/2 text-2xl font-semibold text-center bg-white rounded-lg shadow-md p-4 m-4 dark:bg-white-opacity-12">
-        @if(WeekId.HasValue)
+        @if (WeekId.HasValue)
         {
-          <span>The @SeasonId Week @WeekId Report</span>
+            <span>The @SeasonId Week @WeekId Report</span>
         }
         else
         {
@@ -52,33 +52,23 @@ else
             <div class="md:mx-8">
                 <TabSet>
                     <Tab Title="Team Awards">
-                        <div role="table" class="max-w-2xl" aria-label="Team awards" aria-rowcount="4">
-                            <div role="rowgroup">
-                                <div class="table-row" role="row">
-                                    <span role="columnheader" class="hidden">Icon</span>
-                                    <span role="columnheader" class="hidden">Category</span>
-                                    <span role="columnheader" class="hidden">Team(s)</span>
-                                    <span role="columnheader" class="hidden">Score</span>
-                                </div>
-                            </div>
-                            <div role="rowgroup">
-                                <TeamAwardTableRow Icon="👑"
-                                                    Category="Highest Scorer"
-                                                    Score=@HighScoreTeam.First().Score
-                                                    Teams=@HighScoreTeam></TeamAwardTableRow>
-                                <TeamAwardTableRow Icon="🍀"
-                                                    Category="Most Unlucky"
-                                                    Score=@UnluckyTeam.First().Score
-                                                    Teams=@UnluckyTeam></TeamAwardTableRow>
-                                <TeamAwardTableRow Icon="💪"
-                                                    Category="Most Dominant Win"
-                                                    Score=@Teams.GetMarginalScoreForTeam(DominantTeam.First().Team.Id)
-                                                    Teams=@DominantTeam></TeamAwardTableRow>
-                                <TeamAwardTableRow Icon="📏"
-                                                    Category="Narrowest Loss"
-                                                    Score=@Teams.GetMarginalScoreForTeam(NarrowLossTeam.First().Team.Id)
-                                                    Teams=@NarrowLossTeam></TeamAwardTableRow>
-                            </div>
+                        <div class="flex justify-evenly">
+                            <WeeklyAwardIcon Icon="👑"
+                                         Category="Highest Scorer"
+                                         Score=@HighScoreTeam.First().Score
+                                         Teams=@HighScoreTeam></WeeklyAwardIcon>
+                            <WeeklyAwardIcon Icon="🍀"
+                                         Category="Most Unlucky"
+                                         Score=@UnluckyTeam.First().Score
+                                         Teams=@UnluckyTeam></WeeklyAwardIcon>
+                            <WeeklyAwardIcon Icon="💪"
+                                         Category="Most Dominant"
+                                         Score=@Teams.GetMarginalScoreForTeam(DominantTeam.First().Team.Id)
+                                         Teams=@DominantTeam></WeeklyAwardIcon>
+                            <WeeklyAwardIcon Icon="📏"
+                                         Category="Narrowest Loss"
+                                         Score=@Teams.GetMarginalScoreForTeam(NarrowLossTeam.First().Team.Id)
+                                         Teams=@NarrowLossTeam></WeeklyAwardIcon>
                         </div>
                     </Tab>
 
@@ -93,34 +83,34 @@ else
                                 </div>
                             </div>
                             <div role="rowgroup">
-                                <PlayerAwardTableRow Icon="🔥" 
-                                                        Position="QB" 
-                                                        Score=@(TopQB.First().BoxScore.TotalPoints) 
-                                                        Players=@TopQB></PlayerAwardTableRow>
-                                <PlayerAwardTableRow Icon="🔥" 
-                                                        Position="RB" 
-                                                        Score=@(TopRB.First().BoxScore.TotalPoints) 
-                                                        Players=@TopRB></PlayerAwardTableRow>
-                                <PlayerAwardTableRow Icon="🔥" 
-                                                        Position="WR" 
-                                                        Score=@(TopWR.First().BoxScore.TotalPoints) 
-                                                        Players=@TopWR></PlayerAwardTableRow>
-                                <PlayerAwardTableRow Icon="🔥" 
-                                                        Position="TE" 
-                                                        Score=@(TopTE.First().BoxScore.TotalPoints) 
-                                                        Players=@TopTE></PlayerAwardTableRow>
-                                <PlayerAwardTableRow Icon="🔥" 
-                                                        Position="DST" 
-                                                        Score=@(TopDST.First().BoxScore.TotalPoints) 
-                                                        Players=@TopDST></PlayerAwardTableRow>
-                                <PlayerAwardTableRow Icon="🤔" 
-                                                        Position="K" 
-                                                        Score=@(TopK.First().BoxScore.TotalPoints) 
-                                                        Players=@TopK></PlayerAwardTableRow>
-                                <PlayerAwardTableRow Icon="💺" 
-                                                        Position="BENCH" 
-                                                        Score=@(TopBench.First().BoxScore.TotalPoints) 
-                                                        Players=@TopBench></PlayerAwardTableRow>
+                                <PlayerAwardTableRow Icon="🔥"
+                                                 Position="QB"
+                                                 Score=@(TopQB.First().BoxScore.TotalPoints)
+                                                 Players=@TopQB></PlayerAwardTableRow>
+                                <PlayerAwardTableRow Icon="🔥"
+                                                 Position="RB"
+                                                 Score=@(TopRB.First().BoxScore.TotalPoints)
+                                                 Players=@TopRB></PlayerAwardTableRow>
+                                <PlayerAwardTableRow Icon="🔥"
+                                                 Position="WR"
+                                                 Score=@(TopWR.First().BoxScore.TotalPoints)
+                                                 Players=@TopWR></PlayerAwardTableRow>
+                                <PlayerAwardTableRow Icon="🔥"
+                                                 Position="TE"
+                                                 Score=@(TopTE.First().BoxScore.TotalPoints)
+                                                 Players=@TopTE></PlayerAwardTableRow>
+                                <PlayerAwardTableRow Icon="🔥"
+                                                 Position="DST"
+                                                 Score=@(TopDST.First().BoxScore.TotalPoints)
+                                                 Players=@TopDST></PlayerAwardTableRow>
+                                <PlayerAwardTableRow Icon="🤔"
+                                                 Position="K"
+                                                 Score=@(TopK.First().BoxScore.TotalPoints)
+                                                 Players=@TopK></PlayerAwardTableRow>
+                                <PlayerAwardTableRow Icon="💺"
+                                                 Position="BENCH"
+                                                 Score=@(TopBench.First().BoxScore.TotalPoints)
+                                                 Players=@TopBench></PlayerAwardTableRow>
                             </div>
                         </div>
                     </Tab>
@@ -137,16 +127,16 @@ else
                                 </div>
                             </div>
                             <div role="rowgroup">
-                            @foreach (var player in GoosePlayers)
-                            {
-                                <div role="row" class="flex items-center border-t-2 border-gray-200">
-                                    <div role="cell" class="flex-none py-6 px-2 sm:px-4">🦢</div>
-                                    <div role="cell" class="w-20 px-2 sm:px-4">@player.BoxScore.Position</div>
-                                    <div role="cell" class="w-1/3 px-2 sm:px-4">@player.BoxScore.Player.FullName</div>
-                                    <div role="cell" class="w-1/3 px-2 sm:px-4">@player.FantasyTeam.Name</div>
-                                    <div role="cell" class="flex-grow text-right px-2 sm:px-4">@player.BoxScore.TotalPoints pts</div>
-                                </div>
-                            }
+                                @foreach (var player in GoosePlayers)
+                                {
+                                    <div role="row" class="flex items-center border-t-2 border-gray-200">
+                                        <div role="cell" class="flex-none py-6 px-2 sm:px-4">🦢</div>
+                                        <div role="cell" class="w-20 px-2 sm:px-4">@player.BoxScore.Position</div>
+                                        <div role="cell" class="w-1/3 px-2 sm:px-4">@player.BoxScore.Player.FullName</div>
+                                        <div role="cell" class="w-1/3 px-2 sm:px-4">@player.FantasyTeam.Name</div>
+                                        <div role="cell" class="flex-grow text-right px-2 sm:px-4">@player.BoxScore.TotalPoints pts</div>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </Tab>
@@ -154,7 +144,7 @@ else
             </div>
         </div>
     </div>
-    
+
     <div class="flex justify-center">
         <div class="bg-white rounded-lg shadow-md p-4 mx-2 my-4 flex-grow max-w-screen-md dark:bg-white-opacity-12">
             <h2 class="font-semibold text-xl mx-2 mb-4">
@@ -171,24 +161,23 @@ else
                         </tr>
                     </thead>
                     <tbody role="rowgroup">
-                    @foreach (var team in Teams.OrderBy(x => x.Team.PlayoffSeed))
-                    {
-                        <tr role="row" class="border-t-2 border-gray-200">
-                            <td role="cell" class="flex py-6 px-2 sm:px-4">
-                                <TeamLogo LogoUrl=@team.Team.LogoURL Alt=@team.Team.Name Size=6 Class="mr-2"></TeamLogo>
-                                @team.Team.Name
-                            </td>
-                            <td role="cell" class="py-6 px-2 sm:px-4">@team.Team.PlayoffSeed</td>
-                            <td role="cell" class="py-6 px-2 sm:px-4">@team.Team.Wins-@team.Team.Losses-@team.Team.Ties</td>
-                            <td role="cell" class="py-6 px-2 sm:px-4">@team.Team.TotalPointsScored</td>
-                        </tr>
-                    }
+                        @foreach (var team in Teams.OrderBy(x => x.Team.PlayoffSeed))
+                        {
+                            <tr role="row" class="border-t-2 border-gray-200">
+                                <td role="cell" class="flex py-6 px-2 sm:px-4">
+                                    <TeamLogo LogoUrl=@team.Team.LogoURL Alt=@team.Team.Name Size=6 Class="mr-2"></TeamLogo>
+                                    @team.Team.Name
+                                </td>
+                                <td role="cell" class="py-6 px-2 sm:px-4">@team.Team.PlayoffSeed</td>
+                                <td role="cell" class="py-6 px-2 sm:px-4">@team.Team.Wins-@team.Team.Losses-@team.Team.Ties</td>
+                                <td role="cell" class="py-6 px-2 sm:px-4">@team.Team.TotalPointsScored</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
 }
 
 
